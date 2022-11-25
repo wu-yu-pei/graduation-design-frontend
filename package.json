@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@unocss/preset-rem-to-px": "^0.45.1",
+    "axios": "^1.2.0",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.17",
     "pinia-plugin-persistedstate": "^2.4.0",
