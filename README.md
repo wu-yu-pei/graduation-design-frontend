@@ -1,6 +1,6 @@
 ## Vue Project Template
 
-#### VUE + Vite + Pinia + Unocss + FileSysRouter + Layout
+#### VUE + Vite + Pinia + Unocss + FileSysRouter + Layout + CICD
 
 #### CICD
 + ACCESS_TOKEN  凭证
