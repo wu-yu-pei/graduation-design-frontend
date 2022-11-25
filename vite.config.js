@@ -3,12 +3,22 @@ import vue from '@vitejs/plugin-vue';
 
 import Pages from 'vite-plugin-pages';
 import Layouts from 'vite-plugin-vue-layouts';
+import AutoImport from 'unplugin-auto-import/vite';
 
 import Unocss from 'unocss/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), Pages(), Unocss(), Layouts()],
+  plugins: [
+    vue(),
+    Pages(),
+    Unocss(),
+    Layouts(),
+    AutoImport({
+      include: [/\.vue$/],
+      imports: ['vue', 'vue-router'],
+    }),
+  ],
   server: {
     port: 5173,
     open: true,
