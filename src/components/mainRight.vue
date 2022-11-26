@@ -4,7 +4,7 @@
       <div class="top-image" w50 h50 bg-white p2  b-rd-10>
         <img w46 h46 b-rd-10 src="https://lh3.googleusercontent.com/ogw/AOh-ky0thmu99DxORVxF34FhA7Vs7XYWiEtg5V9fcd6T=s32-c-mo" alt="">
       </div>
-      <div class="top-name" bg-white flex-1 h50 text-center lh-50 b-rd-10>欢迎:Growing登录系统</div>
+      <div class="top-name" bg-white flex-1 h50 text-center lh-50 b-rd-10>Growing,欢迎使用物流追踪系统</div>
     </div>
   </div>
 </template>
