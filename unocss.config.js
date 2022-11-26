@@ -11,7 +11,8 @@ export default defineConfig({
     ['text-ellipsis', 'truncate'],
   ],
   rules: [
-    [/^text-(.+)$/, ([, position]) => ({ 'text-align': `${position}` })],
-    ['card-shadow', { 'box-shadow': '0 1px 2px -2px #00000029, 0 3px 6px #0000001f, 0 5px 12px 4px #00000017' }],
+    [/^m-(\d+)$/, ([, d]) => ({ margin: `${d / 4}rem` })],
+    [/^fs-(.+)$/, ([, d]) => ({ 'font-size': `${d}px` })],
+    [/^fw-(.+)$/, ([, height]) => ({ 'font-weight': `${height}` })],
   ],
 });

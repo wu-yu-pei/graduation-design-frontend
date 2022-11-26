@@ -16,7 +16,7 @@
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.17",
     "pinia-plugin-persistedstate": "^2.4.0",
-    "unocss": "^0.45.1",
+    "unocss": "^0.46.5",
     "vite-plugin-pages": "^0.25.0",
     "vite-plugin-vue-layouts": "^0.7.0",
     "vue": "^3.2.37",

@@ -4,6 +4,9 @@
 
 <script setup>
 import AMapLoader from '@amap/amap-jsapi-loader';
+import useAppStore from '../store/app';
+const appStore = useAppStore();
+
 function initMap() {
   AMapLoader.load({
     key: '62bf752ab1f963e58a757af1298be24c',
@@ -20,6 +23,9 @@ function initMap() {
         mapStyle: 'amap://styles/darkblue', //设置地图的显示样式
         viewMode: '3D', //使用3D视图
       });
+      appStore.AMap = AMap;
+      appStore.map = map;
+
       var loca = new Loca.Container({
         map,
       });

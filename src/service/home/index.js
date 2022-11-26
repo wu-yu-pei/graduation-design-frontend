@@ -18,3 +18,22 @@ export function findShop(uid) {
     },
   });
 }
+
+export function createShop(data) {
+  return request.post({
+    interceptors: {
+      interceptorsRequest(config) {
+        const token = localStorage.getItem('token');
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      InterceptorsRequestCatch(err) {
+        return err;
+      },
+    },
+    url: '/createshop',
+    data,
+  });
+}
