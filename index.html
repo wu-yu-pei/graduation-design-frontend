@@ -4,8 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // 添加高德安全密钥    安全密钥是和key一起申请的，可能很多人会忽略掉。他也大有用处
+      window._AMapSecurityConfig = {
+        securityJsCode: 'ad2a59572b015442cad6cb4a5dad7c66',
+      };
+    </script>
     <!-- 高德地图 AMap -->
-    <script src="https://webapi.amap.com/maps?v=1.4.15&key=e2fd5b30f6ce1ecc777fb92c4047e64b"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=62bf752ab1f963e58a757af1298be24c&plugin=AMap.Driving"></script>
     <title>Vite + Vue</title>
   </head>
   <body>
