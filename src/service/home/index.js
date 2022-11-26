@@ -9,3 +9,12 @@ export function login({ account, password }) {
     },
   });
 }
+
+export function findShop(uid) {
+  return request.get({
+    url: '/shop',
+    params: {
+      uid,
+    },
+  });
+}

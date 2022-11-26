@@ -7,20 +7,21 @@
     <div class="circle" bg-red w20 h20 absolute top-10 :style="{ right: leftIsShow ? '320px' : '-40px' }" @click="leftIsShow = true">
       <span i-material-symbols-arrow-forward w20 h20 inline-block bg-white cursor-pointer color-white></span>
     </div>
-    <Item></Item>
-    <Item></Item>
-    <Item></Item>
-    <Item></Item>
-    <Item></Item>
-    <Item></Item>
-    <Item></Item>
-    <Item></Item>
+    <template v-for="item in shopList">
+      <Item :shop-name="item.name" :start-address="item.start_position" :end-address="item.end_position" :current-address="item.current_position" :time="item.time"></Item>
+    </template>
   </div>
 </template>
 
 <script setup>
+import { findShop } from '../service/home';
 import Item from '../components/base/item.vue';
 let leftIsShow = ref(true);
+let shopList = ref([]);
+
+findShop(0).then((res) => {
+  shopList.value = res.data;
+});
 </script>
 
 <style scoped lang="less">
