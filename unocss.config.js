@@ -9,6 +9,7 @@ export default defineConfig({
     ['f-c-c', 'flex justify-center items-center'],
     ['flex-col', 'flex flex-col'],
     ['text-ellipsis', 'truncate'],
+    ['btn', 'h22 lh-20 px10 color-white border cursor-pointer'],
   ],
   rules: [
     [/^m-(\d+)$/, ([, d]) => ({ margin: `${d / 4}rem` })],

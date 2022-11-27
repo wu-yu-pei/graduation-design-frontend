@@ -16,7 +16,7 @@ export default defineConfig({
     Layouts(),
     AutoImport({
       include: [/\.vue$/],
-      imports: ['vue', 'vue-router'],
+      imports: ['vue', 'vue-router', 'pinia'],
     }),
   ],
   server: {

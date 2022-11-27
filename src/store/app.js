@@ -5,6 +5,7 @@ const useAppStore = defineStore('app', {
     return {
       AMap: '',
       map: '',
+      loca: '',
     };
   },
 });

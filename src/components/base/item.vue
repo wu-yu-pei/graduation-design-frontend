@@ -1,5 +1,5 @@
 <template>
-  <div class="item" h140px my-10 p-10 b-rd-10>
+  <div class="item" my-10 p-10 b-rd-10>
     <div lh-25>
       <span mr-10>商品名称:</span>
       {{ shopName }}

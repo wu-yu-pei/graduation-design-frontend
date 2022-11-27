@@ -19,71 +19,21 @@ function initMap() {
   })
     .then((AMap) => {
       const map = new AMap.Map('map', {
-        zoom: 11, //级别
+        zoom: 7, //级别
         mapStyle: 'amap://styles/darkblue', //设置地图的显示样式
         viewMode: '3D', //使用3D视图
       });
-      appStore.AMap = AMap;
-      appStore.map = map;
-
-      var loca = new Loca.Container({
+      // 高德可视化插件 初始化
+      let loca = new Loca.Container({
         map,
       });
-      map.on('complete', () => {
-        var linkLayer = new Loca.LinkLayer({
-          zIndex: 20,
-          opacity: 1,
-          visible: true,
-          zooms: [2, 22],
-        });
-        const source = new Loca.GeoJSONSource({
-          data: {
-            type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                properties: {
-                  type: 1,
-                },
-                geometry: {
-                  type: 'LineString',
-                  coordinates: [
-                    [116.46, 39.92],
-                    [127.303, 40.2421],
-                  ],
-                },
-              },
-              {
-                type: 'Feature',
-                properties: {
-                  type: 0,
-                },
-                geometry: {
-                  type: 'LineString',
-                  coordinates: [
-                    [116.45, 39.91],
-                    [107.3, 40.221],
-                  ],
-                },
-              },
-            ],
-          },
-        });
-        linkLayer.setSource(source);
-        linkLayer.setStyle({
-          lineColors: function (index, item) {
-            return item.link.properties.type === 0 ? ['#25CDEA', '#12BFBF'] : ['#FFD87B', '#FF4F00'];
-          },
-          height: function (index, item) {
-            console.log(item);
-            return item.distance / 3;
-          },
-          smoothSteps: function (index, item) {
-            return 200;
-          },
-        });
-        loca.add(linkLayer);
-      });
+
+      appStore.AMap = AMap;
+      appStore.map = map;
+      appStore.loca = loca;
+
+      // 地图加载完成
+      map.on('complete', () => {});
     })
     .catch((e) => {
       console.error(e); //加载错误提示
