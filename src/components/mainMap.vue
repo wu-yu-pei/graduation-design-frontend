@@ -3,9 +3,23 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { defineExpose } from 'vue';
 import AMapLoader from '@amap/amap-jsapi-loader';
 import useAppStore from '../store/app';
 const appStore = useAppStore();
+let map = '';
+let AMap = '';
+let loca = '';
+
+function getMap() {
+  return map;
+}
+function getLoca() {
+  return loca;
+}
+
+defineExpose({ map, AMap, loca, getMap, getLoca });
 
 function initMap() {
   AMapLoader.load({
@@ -18,19 +32,15 @@ function initMap() {
     },
   })
     .then((AMap) => {
-      const map = new AMap.Map('map', {
+      map = new AMap.Map('map', {
         zoom: 7, //级别
         mapStyle: 'amap://styles/darkblue', //设置地图的显示样式
         viewMode: '3D', //使用3D视图
       });
       // 高德可视化插件 初始化
-      let loca = new Loca.Container({
+      loca = new Loca.Container({
         map,
       });
-
-      appStore.AMap = AMap;
-      appStore.map = map;
-      appStore.loca = loca;
 
       // 地图加载完成
       map.on('complete', () => {});
