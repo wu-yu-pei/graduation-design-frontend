@@ -38,14 +38,13 @@
 </template>
 
 <script setup>
-import { nextTick, defineEmits } from 'vue';
+import { onMounted, defineEmits } from 'vue';
 import { createShop } from '../service/home';
 import useAppStore from '../store/app';
 const appStore = useAppStore();
 const name = ref('');
 const emits = defineEmits(['showShopFlow']);
 
-const { AMap, map, loca } = storeToRefs(appStore);
 const start = reactive({
   name: '',
   position: '',
@@ -80,53 +79,43 @@ function showShopFlow() {
 
 function showShopCountDistribution() {}
 
+onMounted(() => {
+  // console.log(AMap);
+});
+
 // 监听 如果AMap map有值 就去加载插件
 watch(
-  () => [appStore.AMap, appStore.map],
-  ([AMap, map], _) => {
-    // 搜索提示插件
+  () => appStore.isLoadComputer,
+  (n, _) => {
+    if (!n) return;
+    const placeSearch = new AMap.PlaceSearch({ map: appStore.map });
+    const autoCompleteStart = new AMap.AutoComplete({
+      input: 'start-position',
+    });
+    const autoCompleteEnd = new AMap.AutoComplete({
+      input: 'end-position',
+    });
 
-    // plugin
-    AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
-      let autoOptions = {
-        input: 'start-position',
-      };
-      let auto = new AMap.AutoComplete(autoOptions);
-      let placeSearch = new AMap.PlaceSearch({
-        map: map,
-      }); //构造地点查询类
-      auto.on('select', select); //注册监听，当选中某条记录时会触发
-      function select(e) {
-        // placeSearch.setCity(e.poi.adcode);
-        if (!e.poi.location) {
-          return alert('请输入详细地址');
-        }
-        console.log(e);
-        start.name = e.poi.name;
-        start.position = e.poi.name;
-        start.position_geo = `${e.poi.location.lng}, ${e.poi.location.lat}`;
+    autoCompleteStart.on('select', selectStart); //注册监听，当选中某条记录时会触发
+    autoCompleteEnd.on('select', selectEnd); //注册监听，当选中某条记录时会触发
+
+    function selectStart(e) {
+      if (!e.poi.location) {
+        return alert('地址不详细，请重新输入');
       }
-    });
-    // plugin
-    AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
-      let autoOptions = {
-        input: 'end-position',
-      };
-      let auto = new AMap.AutoComplete(autoOptions);
-      let placeSearch = new AMap.PlaceSearch({
-        map: map,
-      }); //构造地点查询类
-      auto.on('select', select); //注册监听，当选中某条记录时会触发
-      function select(e) {
-        if (!e.poi.location) {
-          return alert('请输入详细地址');
-        }
-        console.log(e);
-        end.name = e.poi.name;
-        end.position = e.poi.name;
-        end.position_geo = `${e.poi.location.lng}, ${e.poi.location.lat}`;
+      start.name = e.poi.name;
+      start.position = e.poi.name;
+      start.position_geo = `${e.poi.location.lng}, ${e.poi.location.lat}`;
+    }
+
+    function selectEnd(e) {
+      if (!e.poi.location) {
+        return alert('地址不详细，请重新输入');
       }
-    });
+      end.name = e.poi.name;
+      end.position = e.poi.name;
+      end.position_geo = `${e.poi.location.lng}, ${e.poi.location.lat}`;
+    }
   }
 );
 </script>

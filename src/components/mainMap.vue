@@ -25,14 +25,15 @@ function initMap() {
   AMapLoader.load({
     key: '62bf752ab1f963e58a757af1298be24c',
     version: '2.0',
-    plugins: ['AMap.Driving'],
+    plugins: ['AMap.Driving', 'AMap.PlaceSearch', 'AMap.AutoComplete'],
     Loca: {
       // 是否加载 Loca， 缺省不加载
       version: '2.0', // Loca 版本
     },
   })
     .then((AMap) => {
-      map = new AMap.Map('map', {
+      appStore.isLoadComputer = true;
+      appStore.map = map = new AMap.Map('map', {
         zoom: 7, //级别
         mapStyle: 'amap://styles/darkblue', //设置地图的显示样式
         viewMode: '3D', //使用3D视图
