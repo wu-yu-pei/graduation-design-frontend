@@ -3,31 +3,19 @@ import axios from 'axios';
 class Request {
   constructor(config) {
     this.instance = axios.create(config);
-    this.instance.interceptors.request.use(
-      config.interceptors.interceptorsRequest,
-      config.interceptors.InterceptorsRequestCatch
-    );
-    this.instance.interceptors.response.use(
-      config.interceptors.interceptorsResponse,
-      config.interceptors.InterceptorsResponseCatch
-    );
+    this.instance.interceptors.request.use(config.interceptors.interceptorsRequest, config.interceptors.InterceptorsRequestCatch);
+    this.instance.interceptors.response.use(config.interceptors.interceptorsResponse, config.interceptors.InterceptorsResponseCatch);
   }
 
   request(config) {
     return new Promise((resolve, reject) => {
       // 请求拦截器
       if (config?.interceptors?.interceptorsRequest && config?.interceptors?.InterceptorsRequestCatch) {
-        this.instance.interceptors.request.use(
-          config.interceptors.interceptorsRequest,
-          config.interceptors.InterceptorsRequestCatch
-        );
+        this.instance.interceptors.request.use(config.interceptors.interceptorsRequest, config.interceptors.InterceptorsRequestCatch);
       }
       // 响应拦截器
       if (config?.interceptors?.interceptorsResponse && config?.interceptors?.interceptorsResponse) {
-        this.instance.interceptors.response.use(
-          config.interceptors.interceptorsResponse,
-          config.interceptors.InterceptorsResponseCatch
-        );
+        this.instance.interceptors.response.use(config.interceptors.interceptorsResponse, config.interceptors.InterceptorsResponseCatch);
       }
       this.instance
         .request(config)

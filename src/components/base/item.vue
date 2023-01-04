@@ -2,43 +2,28 @@
   <div class="item" my-10 p-10 b-rd-10>
     <div lh-25>
       <span mr-10>商品名称:</span>
-      {{ shopName }}
+      {{ info.name }}
     </div>
     <div lh-25>
       <span mr-10>发货地址:</span>
-      {{ startAddress }}
+      {{ info.start_position }}
     </div>
     <div lh-25>
       <span mr-10>收获地址:</span>
-      {{ endAddress }}
-    </div>
-    <div lh-25>
-      <span mr-10>当前地址:</span>
-      {{ currentAddress }}
+      {{ info.end_position }}
     </div>
     <div lh-25>
       <span mr-10>发货时间:</span>
-      {{ time }}
+      {{ dayjs(info.time * 1).format('YYYY MM-DD HH:mm:ss') }}
     </div>
   </div>
 </template>
 
 <script setup>
+import dayjs from 'dayjs';
 const props = defineProps({
-  shopName: {
-    type: String,
-  },
-  startAddress: {
-    type: String,
-  },
-  endAddress: {
-    type: String,
-  },
-  currentAddress: {
-    type: String,
-  },
-  time: {
-    type: String,
+  info: {
+    type: Object,
   },
 });
 </script>

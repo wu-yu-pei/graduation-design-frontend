@@ -18,10 +18,11 @@ import MainLeft from '../components/mainLeft.vue';
 import MainMap from '../components/mainMap.vue';
 import MainRight from '../components/mainRight.vue';
 import { findShop } from '../service/home';
+import useAppStore from '../store/app';
 const mapRef = ref(null);
 const router = useRouter();
-const token = localStorage.getItem('token');
-if (!token) {
+const appStore = useAppStore();
+if (!appStore.token) {
   router.replace('/login');
 }
 
@@ -32,10 +33,12 @@ findShop('0').then((res) => {
 });
 
 function showShopFlow() {
-  const map = mapRef.value.getMap()
-  const loca = mapRef.value.getLoca()
+  const map = mapRef.value.getMap();
+  const loca = mapRef.value.getLoca();
+
   map.setZoom(5);
   map.setPitch(40);
+
   let linkLayer = new Loca.LinkLayer({
     zIndex: 20,
     opacity: 1,

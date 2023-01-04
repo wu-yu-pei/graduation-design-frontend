@@ -2,7 +2,7 @@
   <div class="main-right" absolute w400 b-1 border-transparent top-20 right-20 bottom-20 rd-10 z2 flex flex-col>
     <div class="right-top" flex justify-between items-center gap20>
       <div class="top-image" w50 h50 bg-white p2 b-rd-10>
-        <img w46 h46 b-rd-10 src="https://lh3.googleusercontent.com/ogw/AOh-ky0thmu99DxORVxF34FhA7Vs7XYWiEtg5V9fcd6T=s32-c-mo" alt="" />
+        <img w46 h46 b-rd-10 src="https://wuyupei.top:8888/upload/82cb385f028de68e02ddd7b14.jpg" alt="" />
       </div>
       <div class="top-name" bg-white flex-1 h50 text-center lh-50 b-rd-10>Growing,欢迎使用物流追踪系统</div>
     </div>
@@ -79,15 +79,12 @@ function showShopFlow() {
 
 function showShopCountDistribution() {}
 
-onMounted(() => {
-  // console.log(AMap);
-});
+onMounted(() => {});
 
-// 监听 如果AMap map有值 就去加载插件
+// 监听 如果 map有值  说明插件加载完成了
 watch(
-  () => appStore.isLoadComputer,
-  (n, _) => {
-    if (!n) return;
+  () => appStore.map,
+  (_, __) => {
     const placeSearch = new AMap.PlaceSearch({ map: appStore.map });
     const autoCompleteStart = new AMap.AutoComplete({
       input: 'start-position',

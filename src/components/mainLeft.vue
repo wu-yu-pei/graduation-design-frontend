@@ -2,13 +2,13 @@
   <div class="main-left" :class="{ hidden: leftIsShow }" px-10 absolute w300 b-1 border-transparent top-20 left--320 bottom-20 rd-10 bg-white z2>
     <div text-center my-10 font700 flex justify-between items-center>
       <span i-material-symbols-arrow-back w20 h20 inline-block cursor-pointer @click="leftIsShow = false"></span>
-      <span>我的订单</span>
+      <span>我的物流</span>
     </div>
     <div class="circle" bg-red w20 h20 absolute top-10 :style="{ right: leftIsShow ? '320px' : '-40px' }" @click="leftIsShow = true">
       <span i-material-symbols-arrow-forward w20 h20 inline-block bg-white cursor-pointer color-white></span>
     </div>
     <template v-for="item in shopList">
-      <Item :shop-name="item.name" :start-address="item.start_position" :end-address="item.end_position" :current-address="item.current_position" :time="item.time"></Item>
+      <Item :info="item"></Item>
     </template>
   </div>
 </template>
