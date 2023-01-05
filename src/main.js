@@ -2,13 +2,15 @@ import { createApp } from 'vue';
 import App from './App.vue';
 
 //  全局 css
-import './assets/css/index.css'
+import './assets/css/index.css';
 
 // unocss
 import 'uno.css';
 
 // normalize.css
-import 'normalize.css'
+import 'normalize.css';
+
+import ElementPlus from 'element-plus';
 
 // router and layouts
 import generatedRoutes from '~pages';
@@ -24,4 +26,4 @@ const router = createRouter({
   history: createWebHistory(),
 });
 
-createApp(App).use(pinia).use(router).mount('#app');
+createApp(App).use(ElementPlus).use(pinia).use(router).mount('#app');

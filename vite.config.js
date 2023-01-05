@@ -4,6 +4,8 @@ import vue from '@vitejs/plugin-vue';
 import Pages from 'vite-plugin-pages';
 import Layouts from 'vite-plugin-vue-layouts';
 import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 import Unocss from 'unocss/vite';
 
@@ -17,6 +19,10 @@ export default defineConfig({
     AutoImport({
       include: [/\.vue$/],
       imports: ['vue', 'vue-router', 'pinia'],
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
     }),
   ],
   server: {
