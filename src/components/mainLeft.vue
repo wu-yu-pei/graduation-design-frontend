@@ -7,9 +7,20 @@
     <div class="circle" bg-red w20 h20 absolute top-10 :style="{ right: leftIsShow ? '320px' : '-40px' }" @click="leftIsShow = true">
       <span i-material-symbols-arrow-forward w20 h20 inline-block bg-white cursor-pointer color-white></span>
     </div>
-    <template v-for="item in shopList">
-      <Item :info="item"></Item>
+    <template v-for="(item, index) in shopList">
+      <Item :info="item" @click="handleItemClick(index)"></Item>
     </template>
+
+    <!-- 弹出框 -->
+    <!-- <el-dialog v-model="isShowDialog" title="Tips" width="30%" draggable>
+      <span>It's a draggable Dialog</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="isShowDialog = false">Cancel</el-button>
+          <el-button type="primary" @click="isShowDialog = false"> Confirm </el-button>
+        </span>
+      </template>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -22,6 +33,13 @@ let shopList = ref([]);
 findShop(0).then((res) => {
   shopList.value = res.data;
 });
+
+// let isShowDialog = ref(false);
+// let currentInfo = ref({});
+// function handleItemClick(index) {
+//   isShowDialog.value = true;
+//   currentInfo = shopList[index];
+// }
 </script>
 
 <style scoped lang="less">
