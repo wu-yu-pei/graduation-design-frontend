@@ -9,6 +9,7 @@ const appStore = useAppStore();
 login({ account: 0, password: 0 }).then((res) => {
   appStore.userInfo = res.data;
   appStore.token = res.data.token;
+  localStorage.setItem('token', res.data.token);
 });
 </script>
 
