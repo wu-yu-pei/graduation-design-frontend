@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
+import { isDaylight } from '../utils/index';
 
 const useAppStore = defineStore('app', {
   state: () => {
     return {
       userInfo: '',
       token: '',
-      map: '',
+      mapRef: '',
+      isDaylight: isDaylight(),
     };
   },
 

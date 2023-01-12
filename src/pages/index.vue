@@ -1,5 +1,5 @@
 <template>
-  <div class="main" reactive w100vw h100vh>
+  <div class="main" relative w100vw h100vh>
     <MainLeft></MainLeft>
     <MainMap ref="mapRef"></MainMap>
     <MainRight @show-shop-flow="showShopFlow"></MainRight>
@@ -19,13 +19,20 @@ import MainMap from '../components/mainMap.vue';
 import MainRight from '../components/mainRight.vue';
 import { findShop } from '../service/home';
 import useAppStore from '../store/app';
-const mapRef = ref(null);
 const router = useRouter();
 const appStore = useAppStore();
 if (!appStore.token) {
   router.replace('/login');
 }
 
+const mapRef = ref(null);
+
+watch(
+  () => mapRef.value,
+  (n) => {
+    appStore.mapRef = n;
+  }
+);
 let shops = reactive({});
 
 findShop('0').then((res) => {

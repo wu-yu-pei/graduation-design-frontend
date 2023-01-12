@@ -34,16 +34,38 @@
         <div class="button" @click="fahuo">发货</div>
       </div>
     </div>
+    <div class="right-control">
+      <div f-c-c btn absolute bottom-0 b-blue left--60 w50 h50 border-rd-10 @click="toggleDark">
+        <div i-material-symbols-sunny-outline-rounded w40 h40 v-show="!appStore.isDaylight"></div>
+        <div i-material-symbols-dark-mode-outline w40 h40 v-show="appStore.isDaylight"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { onMounted, defineEmits } from 'vue';
+import { ElMessage } from 'element-plus';
 import { createShop } from '../service/home';
 import useAppStore from '../store/app';
+import { storeToRefs } from 'pinia';
+
 const appStore = useAppStore();
-const name = ref('');
+const { isDaylight, map, mapRef } = storeToRefs(appStore);
+
 const emits = defineEmits(['showShopFlow']);
+
+function toggleDark() {
+  isDaylight.value = !isDaylight.value;
+  if (isDaylight.value) {
+    mapRef.value.getMap().setMapStyle('amap://styles/normal');
+  } else {
+    mapRef.value.getMap().setMapStyle('amap://styles/darkblue');
+  }
+}
+
+// 发货相关
+const name = ref('');
 
 const start = reactive({
   name: '',
@@ -60,13 +82,22 @@ const end = reactive({
 // 点击发货按钮 去发货
 function fahuo() {
   if (!name.value.trim()) {
-    return alert('商品名不能为空');
+    return ElMessage({
+      message: '商品名不能为空',
+      type: 'error',
+    });
   }
   if (!start.position.trim()) {
-    return alert('发货地址不能为空');
+    return ElMessage({
+      message: '发货地址/位置信息不能为空',
+      type: 'error',
+    });
   }
   if (!start.position.trim()) {
-    return alert('收获地址不能为空');
+    return ElMessage({
+      message: '收获地址/位置信息不能为空',
+      type: 'error',
+    });
   }
   createShop({ name: name.value, start_position: start.position, end_position: end.position, start_position_geo: start.position_geo, end_position_geo: end.position_geo }).then((res) => {
     console.log(res);
@@ -98,7 +129,10 @@ watch(
 
     function selectStart(e) {
       if (!e.poi.location) {
-        return alert('地址不详细，请重新输入');
+        return ElMessage({
+          message: '没有该位置坐标信息，请重新选择',
+          type: 'error',
+        });
       }
       start.name = e.poi.name;
       start.position = e.poi.name;
@@ -107,7 +141,10 @@ watch(
 
     function selectEnd(e) {
       if (!e.poi.location) {
-        return alert('地址不详细，请重新输入');
+        return ElMessage({
+          message: '没有该位置坐标信息，请重新选择',
+          type: 'error',
+        });
       }
       end.name = e.poi.name;
       end.position = e.poi.name;

@@ -3,11 +3,10 @@
 </template>
 
 <script setup>
-import { nextTick, ref } from 'vue';
 import { defineExpose } from 'vue';
 import AMapLoader from '@amap/amap-jsapi-loader';
 import useAppStore from '../store/app';
-import { isDaylight } from '../utils/index';
+
 const appStore = useAppStore();
 let map = '';
 let AMap = '';
@@ -35,11 +34,11 @@ function initMap() {
     .then((AMap) => {
       // 根据时间动态设置样式
       let mapStyle = 'amap://styles/darkblue';
-      if (isDaylight()) {
+      if (appStore.isDaylight) {
         // 是否是白天 如果是白天就设置为白天的样式
         mapStyle = 'amap://styles/normal';
       }
-      appStore.map = map = new AMap.Map('map', {
+      map = new AMap.Map('map', {
         zoom: 7, //级别
         mapStyle, //设置地图的显示样式
         viewMode: '3D', //使用3D视图
