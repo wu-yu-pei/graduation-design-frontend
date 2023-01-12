@@ -18,7 +18,7 @@
     </div>
     <div mt-5>
       <el-button size="small" @click.stop="handelDetialClick">详细信息</el-button>
-      <el-tooltip placement="right" trigger="click">
+      <el-tooltip placement="right" trigger="hover">
         <template #content> <img :src="info.qr_code" alt="" /> </template>
         <el-button size="small">二维码</el-button>
       </el-tooltip>

@@ -49,7 +49,9 @@ function initMap() {
       });
 
       // 地图加载完成
-      map.on('complete', () => {});
+      map.on('complete', () => {
+        console.log('---map load complete---');
+      });
     })
     .catch((e) => {
       console.error(e); //加载错误提示
