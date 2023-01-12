@@ -46,7 +46,7 @@ function showShopFlow() {
   map.setZoom(5);
   map.setPitch(40);
 
-  let linkLayer = new Loca.LinkLayer({
+  let linkLayer = new Loca.PulseLinkLayer({
     zIndex: 20,
     opacity: 1,
     visible: true,
@@ -74,16 +74,23 @@ function showShopFlow() {
   });
   linkLayer.setSource(source);
   linkLayer.setStyle({
-    lineColors: function (index, item) {
-      return item.link.properties.type === 0 ? ['#FFD87B', '#FF4F00'] : ['#25CDEA', '#12BFBF'];
+    unit: 'meter',
+    dash: [40000, 0, 40000, 0],
+    lineWidth: function () {
+      return [15000, 5000];
     },
-    height: function (index, item) {
-      console.log(item);
-      return item.distance / 3;
+    height: function (index, feat) {
+      return feat.distance / 3 + 10;
     },
-    smoothSteps: function (index, item) {
-      return 200;
+    smoothSteps: 30,
+    speed: 150000,
+    flowLength: 100000,
+    lineColors: function (index, feat) {
+      return feat.link.properties.type === 0 ? ['red'] : ['#25CDEA', '#12BFBF'];
     },
+    maxHeightScale: 0.3, // 弧顶位置比例
+    headColor: 'rgba(0, 0, 255, 1)',
+    trailColor: 'rgba(255, 255,0,0)',
   });
   loca.add(linkLayer);
 

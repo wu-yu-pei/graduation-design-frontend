@@ -25,7 +25,7 @@ function initMap() {
   AMapLoader.load({
     key: '62bf752ab1f963e58a757af1298be24c',
     version: '2.0',
-    plugins: ['AMap.Driving', 'AMap.PlaceSearch', 'AMap.AutoComplete'],
+    plugins: ['AMap.Driving', 'AMap.PlaceSearch', 'AMap.AutoComplete', 'AMap.GeometryUtil'],
     Loca: {
       // 是否加载 Loca， 缺省不加载
       version: '2.0', // Loca 版本

@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="right-control">
-      <div f-c-c btn absolute bottom-0 b-blue left--60 w50 h50 border-rd-10 @click="toggleDark">
+      <div f-c-c btn absolute bottom-0 b-blue left--60 w50 h50 border-rd-10 transition-500 hover:bg-blue @click="toggleDark">
         <div i-material-symbols-sunny-outline-rounded w40 h40 v-show="!appStore.isDaylight"></div>
         <div i-material-symbols-dark-mode-outline w40 h40 v-show="appStore.isDaylight"></div>
       </div>

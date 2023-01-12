@@ -20,3 +20,7 @@ html {
 .amap-logo {
   opacity: 0;
 }
+
+.el-dialog__body {
+  padding: 10px !important;
+}
