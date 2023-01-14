@@ -18,9 +18,9 @@
     </div>
     <div mt-5>
       <el-button size="small" @click.stop="handelDetialClick">详细信息</el-button>
-      <el-tooltip placement="right" trigger="hover">
+      <el-tooltip placement="right" trigger="click">
         <template #content> <img :src="info.qr_code" alt="" /> </template>
-        <el-button size="small">二维码</el-button>
+        <el-button size="small" @click.stop="">二维码</el-button>
       </el-tooltip>
       <el-button size="small" @click.stop="getRoundLine">物流</el-button>
     </div>
@@ -95,6 +95,7 @@ function handelDetialClick() {
   });
 }
 
+// 路线
 function getRoundLine() {
   const driving = new AMap.Driving({
     map: mapRef.value.getMap(),
@@ -119,17 +120,33 @@ function getRoundLine() {
         return pre;
       }, []);
 
-      var polylineFull = new AMap.Polyline({
+      var marker = new AMap.Marker({
+        map: mapRef.value.getMap(),
+        position: [116.478935, 39.997761],
+        icon: '1',
+        offset: new AMap.Pixel(-13, -26),
+      });
+
+      // 轨迹
+      new AMap.Polyline({
+        map: mapRef.value.getMap(),
         path: path,
         borderWeight: 2,
         strokeWeight: 10,
-        strokeColor: 'gray',
-        strokeOpacity: 1,
         lineJoin: 'round',
+        showDir: true,
+        strokeColor: '#28F', //线颜色
+        strokeWeight: 6, //线宽
       });
-      mapRef.value.getMap().add(polylineFull);
 
-      // 开始绘制已完成的路线
+      // 已通过的轨迹
+      var passedPolyline = new AMap.Polyline({
+        map: mapRef.value.getMap(),
+        strokeColor: '#AF5', //线颜色
+        strokeWeight: 6, //线宽
+      });
+
+      // 计算已完成的路线
       const diss = [];
       for (let i = 0; i < path.length; i++) {
         const dis = AMap.GeometryUtil.distance(path[i], new AMap.LngLat(currentPos[0], currentPos[1]));
@@ -137,29 +154,16 @@ function getRoundLine() {
       }
       const completeEndPoint = path[diss.indexOf(Math.min(...diss))];
 
-      const completePath = path.slice(
+      let completePath = path.slice(
         0,
         path.findIndex((item) => item == completeEndPoint)
       );
+      passedPolyline.setPath(completePath);
+      completePath = completePath.map((item) => [item.lng, item.lat]);
       console.log(completePath);
-      var polylineComplete = new AMap.Polyline({
-        path: completePath,
-        borderWeight: 2,
-        strokeWeight: 10,
-        strokeColor: 'blue',
-        strokeOpacity: 1,
-        lineJoin: 'round',
-        showDir: true,
-        lineCap: 'round',
-      });
-      mapRef.value.getMap().add(polylineComplete);
-
-      // 绘制当前位置的marker
-      var marker = new AMap.Marker({
-        position: completeEndPoint,
-        title: props.info.current_position,
-      });
-      mapRef.value.getMap().add(marker);
+      for (let i = 0; i < completePath.length; i++) {
+        passedPolyline.setPath(completePath.slice(0, i));
+      }
     }
   });
 }
