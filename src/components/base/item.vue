@@ -1,5 +1,6 @@
 <template>
-  <div class="item" my-10 p-10 b-rd-10 @click="handelDetialClick">
+  <div class="item" my-10 p-10 b-rd-10 relative @click="handelDetialClick">
+    <div absolute right-0 top-0 p-4 fs-12 bg-red color-white h20 :style="{ backgroundColor: info.status == 1 ? 'green' : '' }">{{ info.status == 0 ? '运输中' : '已送达' }}</div>
     <div lh-25>
       <span mr-10>商品名称:</span>
       {{ info.name }}
@@ -33,7 +34,7 @@
         {{ info.name }}
       </div>
     </template>
-    <ul>
+    <ul v-loading="isLoading" h500 style="overflow-y: scroll;">
       <li mt-10 mb-10 ml--10>收货地址：{{ info.end_position }}</li>
       <li mt-10 mb-10 ml--10 v-if="info.current_position">
         {{ dayjs(info.current_time * 1).format('YYYY MM-DD HH:mm:ss') }}
@@ -65,6 +66,7 @@ const { mapRef } = storeToRefs(appSotre);
 // 弹窗
 let isShowDialog = ref(false);
 let detialInfo = ref([]);
+let isLoading = ref(true);
 function handelDetialClick() {
   isShowDialog.value = true;
   const driving = new AMap.Driving({
@@ -75,10 +77,15 @@ function handelDetialClick() {
   const allFollowPoints = [];
   const startPos = props.info.start_position_geo.split(',');
   const endPos = props.info.end_position_geo.split(',');
+  if (!props.info.current_position_geo) {
+    isLoading.value = false;
+    return;
+  }
   const currentPos = props.info.current_position_geo.split(',');
 
   driving.search(startPos, endPos, function (status, result) {
     if (status === 'complete') {
+      isLoading.value = false;
       result.routes.forEach((route) => {
         allFollowPoints.push(...route.steps);
       });
@@ -89,18 +96,24 @@ function handelDetialClick() {
         diss.push(dis);
       }
       const index = diss.indexOf(Math.min(...diss));
-      detialInfo.value = allFollowPoints.slice(0, index + 1);
+      detialInfo.value = allFollowPoints.slice(0, index + 1).reverse();
       console.log(detialInfo.value);
     }
   });
 }
 
 // 路线
+let roundLineIsShow = false;
 function getRoundLine() {
+  if (roundLineIsShow) return;
+  mapRef.value.getMap().setZoom(5);
+  roundLineIsShow = true;
+
   const driving = new AMap.Driving({
     map: mapRef.value.getMap(),
     policy: AMap.DrivingPolicy.LEAST_TIME,
     showTraffic: false,
+    autoFitView: false,
   });
 
   const allFollowPoints = [];
@@ -109,7 +122,7 @@ function getRoundLine() {
   const currentPos = props.info.current_position_geo.split(',');
 
   // 绘制路线
-  driving.search(startPos, endPos, function (status, result) {
+  driving.search(startPos, endPos, async function (status, result) {
     if (status === 'complete') {
       result.routes.forEach((route) => {
         allFollowPoints.push(...route.steps);
@@ -122,9 +135,13 @@ function getRoundLine() {
 
       var marker = new AMap.Marker({
         map: mapRef.value.getMap(),
-        position: [116.478935, 39.997761],
-        icon: '1',
-        offset: new AMap.Pixel(-13, -26),
+        icon: new AMap.Icon({
+          image: '/image/project_icon2.png',
+          imageSize: new AMap.Size(30, 30),
+        }),
+        size: new AMap.Size(30, 30),
+        // offset: new AMap.Pixel(-15, -15),
+        anchor: 'center',
       });
 
       // 轨迹
@@ -160,11 +177,24 @@ function getRoundLine() {
       );
       passedPolyline.setPath(completePath);
       completePath = completePath.map((item) => [item.lng, item.lat]);
-      console.log(completePath);
+
+      // 动态绘制已完成的路线
+      console.log(completePath.length);
       for (let i = 0; i < completePath.length; i++) {
+        if (i % Math.floor(completePath.length / 100) == 0) await sleep(1);
+        marker.setPosition(completePath[i]);
+        mapRef.value.getMap().setCenter(completePath[i]);
         passedPolyline.setPath(completePath.slice(0, i));
       }
     }
+  });
+}
+
+function sleep(time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
   });
 }
 </script>
@@ -201,7 +231,7 @@ ul li {
   &::before {
     position: absolute;
     top: 0;
-    left: -18px;
+    left: -16px;
     content: '↑';
   }
 }

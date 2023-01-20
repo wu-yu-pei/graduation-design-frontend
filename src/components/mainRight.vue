@@ -78,7 +78,7 @@ function showShopFlow() {
   map.setPitch(40);
 
   var linkLayer = new Loca.PulseLinkLayer({
-    zIndex: 20,
+    zIndex: 2000,
     opacity: 1,
     visible: true,
     zooms: [2, 22],
