@@ -34,7 +34,7 @@
         {{ info.name }}
       </div>
     </template>
-    <ul v-loading="isLoading" h500 style="overflow-y: scroll;">
+    <ul v-loading="isLoading" h500 style="overflow-y: scroll">
       <li mt-10 mb-10 ml--10>收货地址：{{ info.end_position }}</li>
       <li mt-10 mb-10 ml--10 v-if="info.current_position">
         {{ dayjs(info.current_time * 1).format('YYYY MM-DD HH:mm:ss') }}
@@ -106,6 +106,7 @@ function handelDetialClick() {
 let roundLineIsShow = false;
 function getRoundLine() {
   if (roundLineIsShow) return;
+  const elLoading = ElLoading.service({ fullscreen: true });
   mapRef.value.getMap().setZoom(5);
   roundLineIsShow = true;
 
@@ -140,7 +141,6 @@ function getRoundLine() {
           imageSize: new AMap.Size(30, 30),
         }),
         size: new AMap.Size(30, 30),
-        // offset: new AMap.Pixel(-15, -15),
         anchor: 'center',
       });
 
@@ -155,6 +155,7 @@ function getRoundLine() {
         strokeColor: '#28F', //线颜色
         strokeWeight: 6, //线宽
       });
+      elLoading.close();
 
       // 已通过的轨迹
       var passedPolyline = new AMap.Polyline({
@@ -175,16 +176,15 @@ function getRoundLine() {
         0,
         path.findIndex((item) => item == completeEndPoint)
       );
-      passedPolyline.setPath(completePath);
-      completePath = completePath.map((item) => [item.lng, item.lat]);
+      completePath = completePath.map((item) => new AMap.LngLat(item.lng, item.lat));
 
       // 动态绘制已完成的路线
-      console.log(completePath.length);
-      for (let i = 0; i < completePath.length; i++) {
-        if (i % Math.floor(completePath.length / 100) == 0) await sleep(1);
+      for (let i = 0; i < completePath.length; ) {
+        if (i % Math.floor(completePath.length / 100) == 0) await sleep(0);
         marker.setPosition(completePath[i]);
         mapRef.value.getMap().setCenter(completePath[i]);
         passedPolyline.setPath(completePath.slice(0, i));
+        i += 10;
       }
     }
   });

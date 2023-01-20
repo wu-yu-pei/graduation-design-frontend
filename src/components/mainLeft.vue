@@ -1,5 +1,5 @@
 <template>
-  <div class="main-left" :class="{ hidden: leftIsShow }" px-10 absolute w300 b-1 border-transparent top-20 left--320 bottom-20 rd-10 bg-white z2>
+  <div class="main-left" v-loading="isLoading" :class="{ hidden: leftIsShow }" px-10 absolute w300 b-1 border-transparent top-20 left--320 bottom-20 rd-10 bg-white z2>
     <div text-center my-10 font700 flex justify-between items-center>
       <span i-material-symbols-arrow-back w20 h20 inline-block cursor-pointer @click="leftIsShow = false"></span>
       <span>我的物流</span>
@@ -18,8 +18,10 @@ import { findShop } from '../service/home';
 import Item from '../components/base/item.vue';
 let leftIsShow = ref(true);
 let shopList = ref([]);
+let isLoading = ref(true);
 
 findShop(0).then((res) => {
+  isLoading.value = false;
   shopList.value = res.data;
 });
 </script>
