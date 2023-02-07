@@ -14,6 +14,11 @@ html {
   user-select: none;
 }
 
+#app {
+  height: 100%;
+  width: 100%;
+}
+
 /*
   * 隐藏高德地图logo
 */

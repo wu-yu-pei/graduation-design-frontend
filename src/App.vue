@@ -2,6 +2,16 @@
   <router-view></router-view>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router';
+import useAppStore from './store/app';
 
-<style></style>
+const router = useRouter();
+const appStore = useAppStore();
+
+if (!appStore.token) {
+  router.replace('/login');
+} else {
+  router.replace('/main/SystemIntroduce');
+}
+</script>

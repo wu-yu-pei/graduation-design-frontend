@@ -1,0 +1,38 @@
+<template>
+  <div class="index">
+    <el-container>
+      <el-aside width="200px">
+        <AsideHeader></AsideHeader>
+        <AsideBody></AsideBody>
+      </el-aside>
+      <el-container>
+        <el-header>Header</el-header>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
+</template>
+
+<route lang="yaml">
+meta:
+  layout: default
+</route>
+
+<script setup></script>
+
+<style scoped lang="less">
+.index {
+  width: 100%;
+  height: 100%;
+}
+.el-container {
+  width: 100%;
+  height: 100%;
+}
+
+.el-main {
+  border-top: 1px solid #dcdfe6;
+}
+</style>
