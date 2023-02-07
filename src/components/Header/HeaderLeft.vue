@@ -38,8 +38,17 @@ const menu = [
 const isAnimation = ref(true);
 const route = useRoute();
 
+const currentMenu = computed(() => {
+  const path = route.fullPath;
+  isAnimation.value = false;
+  setTimeout(() => {
+    isAnimation.value = true;
+  }, 200);
+  return findNameByPath(menu, path);
+});
+
 function findNameByPath(menu, path) {
-  const map = menu.reduce((pur, cur, index) => {
+  const map = menu.reduce((pur, cur) => {
     if (cur.children) {
       pur.push(...cur.children.map((item) => ({ ...item, parentTitle: cur.title })));
     } else {
@@ -50,16 +59,6 @@ function findNameByPath(menu, path) {
   console.log(map);
   return map.find((item) => item.index == path);
 }
-
-const currentMenu = computed(() => {
-  const path = route.fullPath;
-  isAnimation.value = false;
-  setTimeout(() => {
-    isAnimation.value = true;
-  }, 200);
-
-  return findNameByPath(menu, path);
-});
 </script>
 
 <style scoped lang="less">

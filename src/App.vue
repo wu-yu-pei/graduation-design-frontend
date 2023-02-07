@@ -12,6 +12,6 @@ const appStore = useAppStore();
 if (!appStore.token) {
   router.replace('/login');
 } else {
-  router.replace('/main/SystemIntroduce');
+  router.push('/main/SystemIntroduce');
 }
 </script>
