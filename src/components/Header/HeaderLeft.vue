@@ -56,7 +56,6 @@ function findNameByPath(menu, path) {
     }
     return pur;
   }, []);
-  console.log(map);
   return map.find((item) => item.index == path);
 }
 </script>
