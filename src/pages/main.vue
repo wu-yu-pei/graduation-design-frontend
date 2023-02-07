@@ -6,7 +6,10 @@
         <AsideBody></AsideBody>
       </el-aside>
       <el-container>
-        <el-header>Header</el-header>
+        <el-header>
+          <HeaderLeft></HeaderLeft>
+          <HeaderRight></HeaderRight>
+        </el-header>
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -32,6 +35,11 @@ meta:
   height: 100%;
 }
 
+.el-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .el-main {
   border-top: 1px solid #dcdfe6;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="aside-header">基于javaScript GL的 <br/>物流追踪系统</div>
+  <div class="aside-header">基于javaScript GL的 <br />物流追踪系统</div>
 </template>
 
 <script setup></script>
@@ -13,7 +13,9 @@
   height: 60px;
   line-height: 25px;
   text-align: center;
-  color: blue;
+  color: #545c64;
+  letter-spacing: 2px;
+  font-weight: bold;
   border-right: 1px solid #dcdfe6;
   cursor: pointer;
 }

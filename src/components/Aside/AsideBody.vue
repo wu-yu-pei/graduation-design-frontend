@@ -1,24 +1,77 @@
 <template>
   <div class="aside-body">
-    <el-menu :router="true" :default-active="routes[0].index" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-      <template v-for="(item, index) in routes" :key="index">
-        <el-menu-item :index="item.index">
-          <el-icon><icon-menu /></el-icon>
-          <span>{{ item.title }}</span>
-        </el-menu-item>
+    <el-menu :router="true" :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+      <template v-for="item in menu" :key="index">
+        <template v-if="item.children">
+          <el-sub-menu :index="item.index">
+            <template #title>
+              <el-icon><location /></el-icon>
+              <span>{{ item.title }}</span>
+            </template>
+            <el-menu-item v-for="sItem in item.children" :index="sItem.index">
+              <el-icon>
+                <component :is="sItem.icon"></component>
+              </el-icon>
+              <span>{{ sItem.title }}</span>
+            </el-menu-item>
+          </el-sub-menu>
+        </template>
+        <template v-else>
+          <el-menu-item :index="item.index">
+            <el-icon>
+              <component :is="item.icon"></component>
+            </el-icon>
+            <span>{{ item.title }}</span>
+          </el-menu-item>
+        </template>
       </template>
     </el-menu>
   </div>
 </template>
 
 <script setup>
-const routes = [
-  { title: '系统介绍', index: '/main/SystemIntroduce' },
-  { title: '我的商品', index: '/main/MyShops' },
-  { title: '我要发货', index: '/main/WoYaoFaHuo' },
-  { title: '我的发货', index: '/main/WoDeFaHuo' },
-  { title: '物流总览', index: '/main/Wului' },
+import { ref } from 'vue';
+
+const menu = [
+  { title: '系统介绍', index: '/main/SystemIntroduce', icon: 'House' },
+  { title: '我的货物', index: '/main/MyShops', icon: 'ShoppingBag' },
+  {
+    title: '物流管理',
+    index: '/main/WoYaoFahuo',
+    icon: 'House',
+    children: [
+      {
+        title: '我要发货',
+        index: '/main/WoYaoFahuo',
+        icon: 'Coordinate',
+      },
+      {
+        title: '我的物流',
+        index: '/main/WoDeFahuo',
+        icon: 'Van',
+      },
+    ],
+  },
+  { title: '物流流向', index: '/main/Wului', icon: 'Refresh' },
 ];
+let defaultActive = ref(menu[0].index);
+const route = useRoute();
+
+function findIndexByPath(menu, path) {
+  const map = menu.reduce((pur, cur, index) => {
+    if (cur.children) {
+      pur.push(...cur.children);
+    } else {
+      pur.push(cur);
+    }
+    return pur;
+  }, []);
+  return map.find((item) => item.index == path).index;
+}
+watch(route, () => {
+  const path = route.fullPath;
+  defaultActive.value = findIndexByPath(menu, path);
+});
 </script>
 
 <style scoped lang="less">
