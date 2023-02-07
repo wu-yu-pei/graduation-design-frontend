@@ -13,8 +13,8 @@ const appStore = useAppStore();
 const { userInfo } = storeToRefs(appStore);
 
 function exit() {
-  localStorage.clear()
-  location.reload()
+  localStorage.clear();
+  location.reload();
 }
 </script>
 
@@ -24,6 +24,9 @@ function exit() {
   justify-content: space-between;
   align-items: center;
   gap: 0 10px;
+  .el-avatar {
+    border: 1px solid #ccc;
+  }
   .btn {
     height: 25px;
     color: #545c64;

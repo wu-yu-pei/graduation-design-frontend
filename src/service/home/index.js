@@ -1,3 +1,4 @@
+import axios from 'axios';
 import request from '..';
 
 export function login({ account, password }) {
@@ -35,5 +36,11 @@ export function createShop(data) {
     },
     url: '/createshop',
     data,
+  });
+}
+
+export function getCommits() {
+  return request.get({
+    url: '/commits',
   });
 }
