@@ -76,6 +76,9 @@ span {
   line-height: 35px;
 }
 .three {
+  .el-timeline {
+    padding-left: 0;
+  }
   .el-avatar {
     border: 1px solid #ccc;
   }
