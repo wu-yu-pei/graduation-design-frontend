@@ -124,7 +124,9 @@ function getRoundLine() {
         size: new AMap.Size(30, 30),
         anchor: 'center',
       });
-
+      marker.on('click', (e) => {
+        infoWindow.open(mapRef.value.getMap(), [e.target._position.lng, e.target._position.lat]);
+      });
       // 轨迹
       new AMap.Polyline({
         map: mapRef.value.getMap(),
