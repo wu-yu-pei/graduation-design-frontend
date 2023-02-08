@@ -158,12 +158,13 @@ function showShopFlow() {
 <style scoped lang="less">
 .content {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
+  margin: -20px;
   .btns {
     position: absolute;
     top: 10px;
-    left: -10px;
+    left: 10px;
   }
 }
 </style>

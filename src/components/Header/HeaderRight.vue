@@ -1,6 +1,6 @@
 <template>
   <div class="header-right">
-    <el-avatar :src="userInfo.img" />
+    <el-avatar :src="userInfo.img" /> {{ userInfo.account == 0 ? 'wuyupei' : userInfo.account }}
     <div class="btn" @click="exit">退出</div>
   </div>
 </template>

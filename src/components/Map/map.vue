@@ -5,7 +5,7 @@
 <script setup>
 import AMapLoader from '@amap/amap-jsapi-loader';
 let map = '';
-let AMap = '';
+let Amap = '';
 let loca = '';
 
 function getMap() {
@@ -13,7 +13,7 @@ function getMap() {
 }
 
 function getAMap() {
-  return AMap;
+  return Amap;
 }
 
 function getLoca() {
@@ -32,7 +32,7 @@ function initMap() {
     },
   })
     .then((AMap) => {
-      AMap = AMap;
+      Amap = AMap;
       map = new AMap.Map('map', {
         zoom: 7, //级别
         mapStyle: 'amap://styles/fresh', //设置地图的显示样式
@@ -55,8 +55,7 @@ onMounted(() => {
 
 <style scoped lang="less">
 #map {
-  width: calc(100% + 40px);
-  height: calc(100% + 40px);
-  margin: -20px;
+  width: 100%;
+  height: 100%;
 }
 </style>
