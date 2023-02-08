@@ -2,7 +2,8 @@
   <div class="content">
     <Map ref="mapRef"></Map>
     <div class="btns">
-      <el-button @click="showShopFlow">运输流向</el-button>
+      <el-button @click="showShopFlow">运输流向（飞线图）</el-button>
+      <el-button @click="showShopTransport">运输流向（运输图）</el-button>
       <el-button>数量分布</el-button>
     </div>
   </div>
@@ -21,6 +22,7 @@ findShop('0').then((res) => {
 function showShopFlow() {
   const map = mapRef.value.getMap();
   const loca = mapRef.value.getLoca();
+  loca.clear();
   map.setZoom(5);
   map.setPitch(40);
 
@@ -152,6 +154,50 @@ function showShopFlow() {
 
   // 启动渲染动画
   loca.animate.start();
+}
+
+function showShopTransport() {
+  mapRef.value.getLoca().clear();
+  let outLineSource = shops.reduce(
+    (p, cur, index) => {
+      p.features.push({
+        type: 'Feature',
+        properties: {
+          type: 1,
+        },
+        geometry: {
+          type: 'LineString',
+          coordinates: [cur.start_position_geo.split(','), cur.end_position_geo.split(',')],
+        },
+      });
+      return p;
+    },
+    { type: 'FeatureCollection', features: [] }
+  );
+  var inLineSource = new Loca.GeoJSONSource({
+    data: outLineSource,
+  });
+
+  var outLinelayer = new Loca.PulseLineLayer({
+    // loca,
+    zIndex: 11,
+    opacity: 1,
+    visible: true,
+    zooms: [2, 22],
+  });
+
+  outLinelayer.setStyle({
+    altitude: 0,
+    lineWidth: 3,
+    headColor: 'red',
+    trailColor: 'blue',
+    interval: 0.25,
+    duration: 5000,
+  });
+
+  outLinelayer.setSource(inLineSource);
+  mapRef.value.getLoca().add(outLinelayer);
+  mapRef.value.getLoca().animate.start();
 }
 </script>
 
