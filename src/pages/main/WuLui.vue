@@ -157,25 +157,29 @@ function showShopFlow() {
 }
 
 function showShopTransport() {
+  const map = mapRef.value.getMap();
   mapRef.value.getLoca().clear();
-  let outLineSource = shops.reduce(
-    (p, cur, index) => {
-      p.features.push({
-        type: 'Feature',
-        properties: {
-          type: 1,
-        },
-        geometry: {
-          type: 'LineString',
-          coordinates: [cur.start_position_geo.split(','), cur.end_position_geo.split(',')],
-        },
-      });
-      return p;
-    },
-    { type: 'FeatureCollection', features: [] }
-  );
-  var inLineSource = new Loca.GeoJSONSource({
-    data: outLineSource,
+  map.setZoom(6);
+  map.setPitch(0);
+
+  // 线
+  let inLineSource = new Loca.GeoJSONSource({
+    data: shops.reduce(
+      (p, cur) => {
+        p.features.push({
+          type: 'Feature',
+          properties: {
+            type: 1,
+          },
+          geometry: {
+            type: 'LineString',
+            coordinates: [cur.start_position_geo.split(','), cur.end_position_geo.split(',')],
+          },
+        });
+        return p;
+      },
+      { type: 'FeatureCollection', features: [] }
+    ),
   });
 
   var outLinelayer = new Loca.PulseLineLayer({
@@ -194,9 +198,45 @@ function showShopTransport() {
     interval: 0.25,
     duration: 5000,
   });
-
   outLinelayer.setSource(inLineSource);
   mapRef.value.getLoca().add(outLinelayer);
+
+  // 呼吸点
+  var scatter = new Loca.ScatterLayer({
+    zIndex: 10,
+    opacity: 1,
+    visible: true,
+    zooms: [2, 22],
+  });
+
+  var scatterGeo = new Loca.GeoJSONSource({
+    data: shops.reduce(
+      (p, cur) => {
+        p.features.push({
+          type: 'Feature',
+          properties: {
+            type: 0,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: cur.end_position_geo.split(','),
+          },
+        });
+        return p;
+      },
+      { type: 'FeatureCollection', features: [] }
+    ),
+  });
+  scatter.setSource(scatterGeo);
+  scatter.setStyle({
+    size: [50, 50],
+    borderWidth: 0,
+    texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_yellow.png',
+    duration: 2000,
+    animate: true,
+  });
+  mapRef.value.getLoca().add(scatter);
+
   mapRef.value.getLoca().animate.start();
 }
 </script>
