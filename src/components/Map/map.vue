@@ -7,6 +7,7 @@ import AMapLoader from '@amap/amap-jsapi-loader';
 let map = '';
 let Amap = '';
 let loca = '';
+let emit = defineEmits(['mapLoadComplete']);
 
 function getMap() {
   return map;
@@ -41,6 +42,10 @@ function initMap() {
       // 高德可视化插件 初始化
       loca = new Loca.Container({
         map,
+      });
+
+      map.on('complete', function () {
+        emit('mapLoadComplete');
       });
     })
     .catch((e) => {

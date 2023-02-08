@@ -32,7 +32,7 @@
       </div>
     </el-card>
 
-    <el-dialog v-model="dialogVisibleAddress" title="位置更新" width="90%" height="80vh" draggable>
+    <el-dialog v-model="dialogVisibleAddress" title="位置更新" width="90%" height="80vh" draggable :destroy-on-close="true">
       <div class="content">
         <Map ref="mapRef"></Map>
       </div>
@@ -44,9 +44,9 @@
       </template>
     </el-dialog>
 
-    <el-dialog v-model="dialogVisibleLine" title="运输路线" width="90%" height="80vh" draggable>
+    <el-dialog v-model="dialogVisibleLine" title="运输路线" width="90%" height="80vh" draggable :destroy-on-close="true">
       <div class="content">
-        <Map ref="mapRef"></Map>
+        <Map ref="mapRef" @mapLoadComplete="mapLoadComplete"></Map>
       </div>
     </el-dialog>
   </div>
@@ -78,6 +78,109 @@ function showLine(info) {
   currentShopInfo.value = info;
 }
 
+function mapLoadComplete() {
+  mapRef.value.getMap().clearMap();
+  getRoundLine();
+}
+
+function getRoundLine() {
+  mapRef.value.getMap().setZoom(4);
+
+  const driving = new AMap.Driving({
+    map: mapRef.value.getMap(),
+    policy: AMap.DrivingPolicy.LEAST_TIME,
+    showTraffic: false,
+    autoFitView: false,
+  });
+
+  const allFollowPoints = [];
+  const startPos = currentShopInfo.value.start_position_geo.split(',');
+  const endPos = currentShopInfo.value.end_position_geo.split(',');
+  const currentPos = currentShopInfo.value.current_position_geo.split(',');
+
+  // 绘制路线
+  driving.search(startPos, endPos, async function (status, result) {
+    if (status === 'complete') {
+      result.routes.forEach((route) => {
+        allFollowPoints.push(...route.steps);
+      });
+      // 重新绘制路线 原来的颜色不好看
+      const path = allFollowPoints.reduce((pre, cur) => {
+        pre.push(...cur.path);
+        return pre;
+      }, []);
+
+      // 创建 infoWindow 实例
+      var infoWindow = new AMap.InfoWindow({
+        content: `<div>当前物流已到达:<br/>${currentShopInfo.value.current_position}</div>`, //传入 dom 对象，或者 html 字符串
+      });
+
+      var marker = new AMap.Marker({
+        map: mapRef.value.getMap(),
+        icon: new AMap.Icon({
+          image: '/image/project_icon2.png',
+          imageSize: new AMap.Size(30, 30),
+        }),
+        size: new AMap.Size(30, 30),
+        anchor: 'center',
+      });
+
+      // 轨迹
+      new AMap.Polyline({
+        map: mapRef.value.getMap(),
+        path: path,
+        borderWeight: 2,
+        strokeWeight: 10,
+        lineJoin: 'round',
+        showDir: true,
+        strokeColor: '#28F', //线颜色
+        strokeWeight: 6, //线宽
+      });
+
+      // 已通过的轨迹
+      var passedPolyline = new AMap.Polyline({
+        map: mapRef.value.getMap(),
+        strokeColor: '#AF5', //线颜色
+        strokeWeight: 6, //线宽
+      });
+
+      // 计算已完成的路线
+      const diss = [];
+      for (let i = 0; i < path.length; i++) {
+        const dis = AMap.GeometryUtil.distance(path[i], new AMap.LngLat(currentPos[0], currentPos[1]));
+        diss.push(dis);
+      }
+      const completeEndPoint = path[diss.indexOf(Math.min(...diss))];
+
+      let completePath = path.slice(
+        0,
+        path.findIndex((item) => item == completeEndPoint)
+      );
+      completePath = completePath.map((item) => new AMap.LngLat(item.lng, item.lat));
+
+      // 动态绘制已完成的路线
+      for (let i = 0; i < completePath.length; ) {
+        if (i % Math.floor(completePath.length / 100) == 0) await sleep(0);
+        marker.setPosition(completePath[i]);
+        mapRef.value.getMap().setCenter(completePath[i]);
+        passedPolyline.setPath(completePath.slice(0, i));
+        i += 10;
+      }
+      mapRef.value.getMap().setZoom(5);
+      infoWindow.open(mapRef.value.getMap(), completePath[completePath.length - 1]);
+    }
+  });
+}
+
+function sleep(time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
+  });
+}
+
+// input 聚焦
 function inputFouce(e) {
   let map = mapRef.value.getMap();
   var autoOptions = {
