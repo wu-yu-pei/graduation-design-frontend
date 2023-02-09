@@ -1,7 +1,10 @@
 <template>
-  <div class="my-fahuo">我要发货</div>
+  <div class="my-fahuo">
+    <Title>AA</Title>
+    <div class="body"></div>
+  </div>
 </template>
 
 <script setup></script>
 
-<style scoped></style>
+<style scoped lang="less"></style>

@@ -1,18 +1,25 @@
 <template>
   <div class="my-fahuo">
-    <el-card class="box-card">
-      <template #header>
-        <div class="card-header">
-          <span>我的物流</span>
-        </div>
-      </template>
-      <div>
+    <div class="box-card">
+      <Title>我的物流</Title>
+      <div class="body">
         <el-table :data="shops" style="width: 100%" border="true">
-          <el-table-column fixed prop="name" label="名称" width="250" />
-          <el-table-column prop="current_position" label="当前地址"  />
-          <el-table-column prop="current_time" label="时间"  />
-          <el-table-column prop="start_position" label="发货地址"  />
-          <el-table-column prop="end_position" label="收货地址"  />
+          <el-table-column fixed prop="id" label="id" width="50" />
+          <el-table-column fixed prop="name" label="物流名称" width="250" />
+          <el-table-column label="物流流向">
+            <template #default="scope"> {{ scope.row.start_position }} --> {{ scope.row.end_position }} </template>
+          </el-table-column>
+          <el-table-column prop="current_position" label="当前地址" />
+          <el-table-column label="时间">
+            <template #default="scope">
+              {{ scope.row.current_time }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="qr_code" label="二维码" width="200">
+            <template #default="scope">
+              <img :src="scope.row.qr_code" alt="" />
+            </template>
+          </el-table-column>
           <el-table-column prop="status" label="状态">
             <template #default="scope">
               <el-tag v-if="scope.row.status == 1" type="success">已送达</el-tag>
@@ -30,7 +37,7 @@
           </el-table-column>
         </el-table>
       </div>
-    </el-card>
+    </div>
 
     <el-dialog v-model="dialogVisibleAddress" title="位置更新" width="90%" height="80vh" draggable :destroy-on-close="true">
       <div class="content">
@@ -53,6 +60,7 @@
 </template>
 
 <script setup>
+import { useDateFormat } from '@vueuse/core';
 import { findShop } from '../../service/home/index';
 
 let mapRef = ref(null);
@@ -60,6 +68,9 @@ let shops = reactive([]);
 
 findShop('0').then((res) => {
   shops.push(...res.data);
+  shops.forEach((item) => {
+    item.current_time = useDateFormat(item.current_time * 1, 'YYYY-MM-DD HH:mm:ss');
+  });
 });
 
 let currentShopInfo = ref();
@@ -204,9 +215,15 @@ function inputFouce(e) {
 .my-fahuo {
   height: 100%;
 }
-.el-card {
+.box-card {
+  width: 100%;
   height: 100%;
 }
+.body {
+  height: calc(100% - 40px);
+  margin-top: 20px;
+}
+
 .content {
   height: 70vh;
 }
