@@ -1,5 +1,5 @@
 <template>
-  <div class="aside-header">基于javaScript GL的 <br />物流追踪系统</div>
+  <div class="aside-header">基于javaScript APL GL的 物流追踪系统</div>
 </template>
 
 <script setup></script>

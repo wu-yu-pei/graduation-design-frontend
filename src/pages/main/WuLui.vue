@@ -4,7 +4,8 @@
     <div class="btns">
       <el-button @click="showShopFlow">运输流向（飞线图）</el-button>
       <el-button @click="showShopTransport">运输流向（运输图）</el-button>
-      <el-button>数量分布</el-button>
+      <el-button @click="showAllShop">全部物流</el-button>
+      <el-button @click="showCount">数量分布</el-button>
     </div>
   </div>
 </template>
@@ -239,7 +240,60 @@ function showShopTransport() {
 
   mapRef.value.getLoca().animate.start();
 }
+
+function showAllShop() {
+  const map = mapRef.value.getMap();
+  mapRef.value.getLoca().clear();
+  var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(10, 0) });
+
+  for (var i = 0; i < shops.length; i++) {
+    var marker = new AMap.Marker({
+      position: shops[i].current_position_geo.split(','),
+      map: map,
+      icon: new AMap.Icon({
+        image: '/image/project_icon2.png',
+        imageSize: new AMap.Size(30, 30),
+      }),
+    });
+    marker.content = `
+      <div class="point-marker-body">
+        <div class="name">${shops[i].name}</div>
+        <div class="address">当前位置：${shops[i].current_position}</div>
+      </div>
+    `;
+    marker.on('click', markerClick);
+  }
+
+  function markerClick(e) {
+    const map = mapRef.value.getMap();
+    map.setCenter(e.target._position);
+    infoWindow.setContent(e.target.content);
+    infoWindow.open(map, e.target.getPosition());
+  }
+
+  map.setFitView();
+}
+
+function showCount() {
+  // var loca = mapRef.value.getLoca();
+  // var opts = {
+  //   subdistrict: 0, //获取边界不需要返回下级行政区
+  //   extensions: 'all', //返回行政区边界坐标组等具体信息
+  //   level: 'city', //查询行政级别为 市
+  // };
+  // var district = new AMap.DistrictSearch(opts);
+  // district.search('河南省', (status, res) => {
+  //   console.log(res);
+  // });
+  console.log('----------------------');
+}
 </script>
+<style lang="less">
+.point-marker-body {
+  width: 200px;
+  padding-top: 10px;
+}
+</style>
 
 <style scoped lang="less">
 .content {
