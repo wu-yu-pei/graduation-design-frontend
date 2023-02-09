@@ -1,5 +1,12 @@
 <template>
-  <div>登录页面</div>
+  <div class="body">
+    <div class="panel">
+      <div class="header"></div>
+      <div class="form-body">
+        
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -13,4 +20,17 @@ login({ account: 0, password: 0 }).then((res) => {
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.panel {
+  width: 500px;
+  height: 400px;
+  border: 1px solid red;
+}
+</style>
