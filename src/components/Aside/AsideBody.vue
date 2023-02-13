@@ -1,7 +1,7 @@
 <template>
   <div class="aside-body">
-    <el-menu :router="true" :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-      <template v-for="item in menu" :key="index">
+    <el-menu :router="true" :default-active="defaultActive" class="el-menu-vertical-demo">
+      <template v-for="item in menu" :key="item.index">
         <template v-if="item.children">
           <el-sub-menu :index="item.index">
             <template #title>

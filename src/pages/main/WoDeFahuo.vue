@@ -3,7 +3,7 @@
     <div class="box-card">
       <Title>我的物流</Title>
       <div class="body">
-        <el-table :data="shops" style="width: 100%" border="true">
+        <el-table :data="shops" style="width: 100%" :border="true">
           <el-table-column fixed prop="id" label="id" width="100" />
           <el-table-column fixed prop="name" label="物流名称" width="250" />
           <el-table-column label="物流流向">
