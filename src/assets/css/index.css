@@ -25,7 +25,14 @@ html {
 .amap-logo {
   opacity: 0;
 }
+/*
+  * 高德地图 搜索提示
+*/
+.amap-sug-result {
+  z-index: 999999;
+}
 
 .el-dialog__body {
   padding: 10px !important;
 }
+

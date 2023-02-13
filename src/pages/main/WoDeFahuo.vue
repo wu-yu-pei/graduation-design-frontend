@@ -41,12 +41,14 @@
 
     <el-dialog v-model="dialogVisibleAddress" title="位置更新" width="90%" height="80vh" draggable :destroy-on-close="true">
       <div class="content">
-        <Map ref="mapRef"></Map>
+        <el-input v-model="toAddress" type="text" id="addressSelect" />
+        <div id="panel"></div>
+        <Map ref="mapRef" @mapLoadComplete="mapAddressLoadComplete"></Map>
       </div>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisibleAddress = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisibleAddress = false"> 确定 </el-button>
+          <el-button type="primary" @click="updateAddressConfirm"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -74,7 +76,11 @@ findShop('0').then((res) => {
 });
 
 let currentShopInfo = ref();
-
+// 1.0 更新位置
+// 要更新的地点搜索
+let toAddress = ref('');
+let toAllResult = reactive();
+let toAddressInfo = ref('');
 // 更新位置
 let dialogVisibleAddress = ref(false);
 function updateAddress(info) {
@@ -82,7 +88,43 @@ function updateAddress(info) {
   currentShopInfo.value = info;
 }
 
-// 运输路线
+function updateAddressConfirm() {
+  dialogVisibleAddress.value = false;
+  let target = document.querySelector('.amap_lib_placeSearch_list ul li.active');
+  toAddressInfo.value = toAllResult[target.getAttribute('data-idx')];
+  console.log(toAddressInfo.value);
+}
+
+function mapAddressLoadComplete() {
+  mapRef.value.getMap().clearMap();
+
+  // 搜索插件
+  const placeSearch = new AMap.PlaceSearch({
+    map: mapRef.value.getMap(),
+    pageSize: 5, // 单页显示结果条数
+    pageIndex: 1, // 页码
+    panel: 'panel', // 结果列表将在此容器中进行展示。
+    autoFitView: true,
+  });
+  // 提示插件
+  const autoCompleteSelect = new AMap.AutoComplete({
+    input: 'addressSelect',
+  });
+  // 监听选择
+  autoCompleteSelect.on('select', (e) => {
+    console.log(e);
+    // 搜索
+    placeSearch.search(e.poi.name, (status, result) => {
+      toAllResult = result.poiList.pois;
+    });
+  });
+
+  placeSearch.search('郑州东站', (status, result) => {
+    toAllResult = result.poiList.pois;
+  });
+}
+
+// 2.0运输路线
 let dialogVisibleLine = ref(false);
 function showLine(info) {
   dialogVisibleLine.value = true;
@@ -225,6 +267,21 @@ function inputFouce(e) {
 }
 
 .content {
+  position: relative;
   height: 70vh;
+  .el-input {
+    position: absolute;
+    width: 300px;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #panel {
+    position: absolute;
+    right: 0;
+    width: 500px;
+    height: 200px;
+    z-index: 20;
+  }
 }
 </style>
