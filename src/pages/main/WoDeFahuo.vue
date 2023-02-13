@@ -143,7 +143,7 @@ function showLine(info) {
 
 function mapLoadComplete() {
   mapRef.value.getMap().clearMap();
-  const loadingInstance = ElLoading.service({ fullscreen: true });
+  const loadingInstance = ElLoading.service({ target: '#map' });
   setTimeout(() => {
     loadingInstance.close();
     getRoundLine();
