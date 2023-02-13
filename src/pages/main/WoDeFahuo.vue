@@ -119,6 +119,16 @@ function mapAddressLoadComplete() {
     });
   });
 
+  autoCompleteSelect.on('error', (e) => {
+    if (e.type == 'error') {
+      ElMessage({
+        message: e.info,
+        grouping: true,
+        type: 'error',
+      });
+    }
+  });
+
   placeSearch.search('郑州东站', (status, result) => {
     toAllResult = result.poiList.pois;
   });
