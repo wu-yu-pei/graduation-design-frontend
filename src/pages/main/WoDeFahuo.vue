@@ -4,7 +4,7 @@
       <Title>我的物流</Title>
       <div class="body">
         <el-table :data="shops" style="width: 100%" border="true">
-          <el-table-column fixed prop="id" label="id" width="50" />
+          <el-table-column fixed prop="id" label="id" width="100" />
           <el-table-column fixed prop="name" label="物流名称" width="250" />
           <el-table-column label="物流流向">
             <template #default="scope"> {{ scope.row.start_position }} --> {{ scope.row.end_position }} </template>
@@ -22,16 +22,16 @@
           </el-table-column>
           <el-table-column prop="status" label="状态">
             <template #default="scope">
-              <el-tag v-if="scope.row.status == 1" type="success">已送达</el-tag>
-              <el-tag v-else-if="scope.row.status == 0">运输中</el-tag>
+              <el-tag v-if="scope.row.status == 0" type="success">已送达</el-tag>
+              <el-tag v-else-if="scope.row.status == 1">运输中</el-tag>
               <el-tag v-else-if="scope.row.status == 2" type="danger">已拦截</el-tag>
             </template>
           </el-table-column>
           <el-table-column fixed="right" prop="status" label="操作" width="500">
             <template #default="scope">
               <el-button icon="Delete" type="danger" plain>删除</el-button>
-              <el-button v-if="scope.row.status == 0" type="danger" plain>拦截</el-button>
-              <el-button v-if="scope.row.status == 0" type="primary" plain @click="updateAddress(scope.row)">更新位置</el-button>
+              <el-button v-if="scope.row.status == 1" type="danger" plain>拦截</el-button>
+              <el-button v-if="scope.row.status == 1" type="primary" plain @click="updateAddress(scope.row)">更新位置</el-button>
               <el-button type="success" plain @click="showLine(scope.row)">运输路线</el-button>
             </template>
           </el-table-column>

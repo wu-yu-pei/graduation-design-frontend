@@ -68,10 +68,16 @@ function findIndexByPath(menu, path) {
   }, []);
   return map.find((item) => item.index == path).index;
 }
-watch(route, () => {
-  const path = route.fullPath;
-  defaultActive.value = findIndexByPath(menu, path);
-});
+watch(
+  route,
+  () => {
+    const path = route.fullPath;
+    defaultActive.value = findIndexByPath(menu, path);
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 
 <style scoped lang="less">
