@@ -3,7 +3,7 @@
     <div class="box-card">
       <Title>我的物流</Title>
       <div class="body">
-        <el-table :data="shops" style="width: 100%" :border="true">
+        <el-table :data="shops" v-loading="tabelIsLoading" style="width: 100%" :border="true">
           <el-table-column fixed prop="id" label="id" width="100" />
           <el-table-column fixed prop="name" label="物流名称" width="250" />
           <el-table-column label="物流流向">
@@ -30,7 +30,7 @@
           <el-table-column fixed="right" prop="status" label="操作" width="500">
             <template #default="scope">
               <el-button icon="Delete" type="danger" plain>删除</el-button>
-              <el-button v-if="scope.row.status == 1" type="danger" plain>拦截</el-button>
+              <el-button v-if="scope.row.status == 1" type="danger" plain @click="lanjie(scope.row.id)">拦截</el-button>
               <el-button v-if="scope.row.status == 1" type="primary" plain @click="updateAddress(scope.row)">更新位置</el-button>
               <el-button type="success" plain @click="showLine(scope.row)">运输路线</el-button>
             </template>
@@ -67,9 +67,11 @@ import { findShop } from '../../service/home/index';
 
 let mapRef = ref(null);
 let shops = reactive([]);
+let tabelIsLoading = ref(true);
 
 findShop('0').then((res) => {
   shops.push(...res.data);
+  tabelIsLoading.value = false;
   shops.forEach((item) => {
     item.current_time = useDateFormat(item.current_time * 1, 'YYYY-MM-DD HH:mm:ss');
   });
@@ -249,21 +251,13 @@ function sleep(time) {
   });
 }
 
-// input 聚焦
-function inputFouce(e) {
-  let map = mapRef.value.getMap();
-  var autoOptions = {
-    input: 'tipinput',
-  };
-  var auto = new AMap.AutoComplete(autoOptions);
-  var placeSearch = new AMap.PlaceSearch({
-    map: map,
-  }); //构造地点查询类
-  auto.on('select', select); //注册监听，当选中某条记录时会触发
-  function select(e) {
-    placeSearch.setCity(e.poi.adcode);
-    placeSearch.search(e.poi.name); //关键字查询查询
-  }
+// 拦截
+function lanjie() {
+  console.log(11);
+  ElMessage({
+    type: 'success',
+    message: 'test:拦截成功',
+  });
 }
 </script>
 
@@ -278,6 +272,9 @@ function inputFouce(e) {
 .body {
   height: calc(100% - 40px);
   margin-top: 20px;
+  .el-table {
+    height: 100%;
+  }
 }
 
 .content {
