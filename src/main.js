@@ -12,6 +12,7 @@ import 'normalize.css';
 
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
+import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
 // router and layouts
 import generatedRoutes from '~pages';
@@ -27,4 +28,11 @@ const router = createRouter({
   history: createWebHistory(),
 });
 
-createApp(App).use(ElementPlus).use(pinia).use(router).mount('#app');
+const app = createApp(App);
+app.use(ElementPlus);
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
+app.use(pinia);
+app.use(router);
+app.mount('#app');

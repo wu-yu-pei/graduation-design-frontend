@@ -13,7 +13,7 @@ import Unocss from 'unocss/vite';
 export default defineConfig({
   plugins: [
     vue({}),
-    Pages(),
+    Pages({}),
     Unocss(),
     Layouts(),
     AutoImport({

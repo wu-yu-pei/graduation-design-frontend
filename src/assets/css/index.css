@@ -11,7 +11,12 @@ html {
 
 * {
   box-sizing: border-box;
-  user-select: none;
+  /* user-select: none; */
+}
+
+#app {
+  height: 100%;
+  width: 100%;
 }
 
 /* 滚动条 */

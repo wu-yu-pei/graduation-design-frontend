@@ -37,3 +37,9 @@ export function createShop(data) {
     data,
   });
 }
+
+export function getCommits() {
+  return request.get({
+    url: '/commits',
+  });
+}
