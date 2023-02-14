@@ -26,7 +26,7 @@
 
     <div class="box-card">
       <Title>完成进度</Title>
-      <p style="font-size: 12px; color: blue; padding-left: 10px;">共 {{allCommits.length}} 次提交</p>
+      <p style="font-size: 12px; color: blue; padding-left: 10px">共 <u>{{ allCommits && allCommits.length }}</u> 次提交 已开发 <u>{{ allday }}</u> 天</p>
       <div class="content three">
         <el-timeline>
           <template v-for="item in allCommits">
@@ -56,6 +56,13 @@ import { useDateFormat } from '@vueuse/core';
 import axios from 'axios';
 
 let allCommits = ref();
+let allday = computed(() => {
+  if (!allCommits.value) return '';
+  const endtime = allCommits.value && allCommits.value[0].commit.committer.date;
+  const starttime = allCommits.value && allCommits.value[allCommits.value.length - 1].commit.committer.date;
+  const time = +new Date(endtime) - +new Date(starttime);
+  return parseInt(time / (1 * 24 * 60 * 60 * 1000));
+});
 axios.get('https://api.github.com/repos/wu-yu-pei/graduation-design-frontend/commits').then((res) => {
   allCommits.value = res.data;
   allCommits.value.forEach((item) => {
