@@ -1,13 +1,12 @@
 <template>
-  <div class="my-shops">
-     我的商品
-  </div>
+  <div class="my-shops">我的商品</div>
 </template>
 
-<script setup>
-   
-</script>
+<route lang="yaml">
+meta:
+  name: 我的商品
+</route>
 
-<style scoped>
-   
-</style>
+<script setup></script>
+
+<style scoped></style>

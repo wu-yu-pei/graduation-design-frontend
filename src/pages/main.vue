@@ -10,6 +10,7 @@
           <HeaderLeft></HeaderLeft>
           <HeaderRight></HeaderRight>
         </el-header>
+        <Tab></Tab>
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -39,6 +40,7 @@ meta:
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #dcdfe6;
 }
 .el-main {
   border-top: 1px solid #dcdfe6;

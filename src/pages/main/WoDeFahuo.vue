@@ -61,6 +61,11 @@
   </div>
 </template>
 
+<route lang="yaml">
+meta:
+  name: 我的物流
+</route>
+
 <script setup>
 import { useDateFormat } from '@vueuse/core';
 import { findShop } from '../../service/home/index';

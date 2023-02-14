@@ -10,6 +10,11 @@
   </div>
 </template>
 
+<route lang="yaml">
+meta:
+  name: 物流流向
+</route>
+
 <script setup>
 import { findShop } from '../../service/home';
 const mapRef = ref(null);
