@@ -52,7 +52,8 @@ const menu = [
       },
     ],
   },
-  { title: '物流流向', index: '/main/Wului', icon: 'Refresh' },
+  { title: '物流流向', index: '/main/WuLui', icon: 'Refresh' },
+  { title: '智能物流', index: '/main/ZhiNengWuLui', icon: 'Headset' },
 ];
 let defaultActive = ref(menu[0].index);
 const route = useRoute();

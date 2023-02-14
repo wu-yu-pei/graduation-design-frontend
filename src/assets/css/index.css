@@ -23,6 +23,7 @@ html {
 ::-webkit-scrollbar {
   background-color: #fff;
   width: 2px;
+  height: 2px;
   overflow: visible;
 }
 ::-webkit-scrollbar-thumb {
