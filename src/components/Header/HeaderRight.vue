@@ -1,5 +1,8 @@
 <template>
   <div class="header-right">
+    <a href="https://github.com/wu-yu-pei/graduation-design-frontend">
+      <el-avatar src="https://docs.github.com/assets/cb-803/images/site/favicon.svg" />
+    </a>
     <el-avatar :src="userInfo.img" /> {{ userInfo.account == 0 ? 'wuyupei' : userInfo.account }}
     <div class="btn" @click="exit">退出</div>
   </div>
@@ -26,6 +29,7 @@ function exit() {
   gap: 0 10px;
   .el-avatar {
     border: 1px solid #ccc;
+    background-color: #fff;
   }
   .btn {
     height: 25px;
