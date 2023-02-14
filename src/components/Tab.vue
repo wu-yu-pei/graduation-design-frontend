@@ -1,6 +1,6 @@
 <template>
   <div class="tabs">
-    <el-tag v-for="(tab, index) of tabs" size="large" :class="{ active: activeIndex == index }" :key="tag" @click="tabClick(tab, index)" :closable="tab.isCanClose" @close="handleClose(tab, index)">
+    <el-tag v-for="(tab, index) of tabs" size="large" :class="{ active: activeIndex == index }" :key="tab" @click="tabClick(tab, index)" :closable="tab.isCanClose" @close="handleClose(tab, index)">
       {{ tab.name }}
     </el-tag>
   </div>

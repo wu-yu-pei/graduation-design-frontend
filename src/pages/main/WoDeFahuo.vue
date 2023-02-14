@@ -96,8 +96,15 @@ function updateAddress(info) {
 }
 
 function updateAddressConfirm() {
-  dialogVisibleAddress.value = false;
   let target = document.querySelector('.amap_lib_placeSearch_list ul li.active');
+  if (!target) {
+    ElMessage({
+      type: 'warning',
+      message: '请选择位置',
+    });
+    return;
+  }
+  dialogVisibleAddress.value = false;
   toAddressInfo.value = toAllResult[target.getAttribute('data-idx')];
   console.log(toAddressInfo.value);
 }
@@ -134,10 +141,6 @@ function mapAddressLoadComplete() {
         type: 'error',
       });
     }
-  });
-
-  placeSearch.search('郑州东站', (status, result) => {
-    toAllResult = result.poiList.pois;
   });
 }
 
