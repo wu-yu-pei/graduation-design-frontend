@@ -13,7 +13,7 @@ import { useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-const tabs = useStorage('tabs', [{ name: '系统介绍', path: '/main/SystemIntroduce', isCanClose: false }]);
+const tabs = useStorage('tabs', [{ name: '系统介绍', path: '/main/SystemIntroduce', isCanClose: false }], sessionStorage);
 // const tabs =  reactive([{ name: '系统介绍', path: '/main/SystemIntroduce', isCanClose: false }]);
 let activeIndex = ref(0);
 watch(

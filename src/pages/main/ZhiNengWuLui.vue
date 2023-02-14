@@ -46,7 +46,7 @@ const appStore = useAppStore();
 const { userInfo } = storeToRefs(appStore);
 let question = ref('');
 
-let message = ref([{ from: 'outher', name: 'B', img: '', message: '你好欢迎使用智能助理: 你好欢迎使用智能助理', date: 1655260176099 }]);
+let message = ref([{ from: 'outher', message: '你好欢迎使用智能助理: 使用方法:向我发送物流号即可', date: 1655260176099 }]);
 </script>
 
 <style scoped lang="less">
