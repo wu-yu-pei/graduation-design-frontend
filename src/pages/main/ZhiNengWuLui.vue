@@ -29,8 +29,8 @@
       </div>
     </div>
     <div class="bottom">
-      <el-input placeholder="请输入你的问题" v-model="question"></el-input>
-      <el-button type="primary">发送</el-button>
+      <el-input @enter="send" placeholder="请输入你的问题" v-model="question"></el-input>
+      <el-button type="primary" @click="send">发送</el-button>
     </div>
   </div>
 </template>
@@ -39,6 +39,7 @@ meta:
   name: 智能物流
 </route>
 <script setup>
+import { useStorage } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import useAppStore from '../../store/app';
 
@@ -46,7 +47,25 @@ const appStore = useAppStore();
 const { userInfo } = storeToRefs(appStore);
 let question = ref('');
 
-let message = ref([{ from: 'outher', message: '你好欢迎使用智能助理: 使用方法:向我发送物流号即可', date: 1655260176099 }]);
+let message = useStorage('message', [{ from: 'outher', message: '你好欢迎使用智能助理: 使用方法:向我发送物流号即可', date: 1655260176099 }], sessionStorage);
+
+function send() {
+  message.value.push({
+    from: 'self',
+    message: question.value,
+    date: +new Date(),
+  });
+  if (typeof +question.value != 'number') {
+    setTimeout(() => {
+      message.value.push({
+        from: 'outher',
+        message: '抱歉，我只认识物流编码哦！',
+        date: +new Date(),
+      });
+    }, 500);
+  }
+  question.value = '';
+}
 </script>
 
 <style scoped lang="less">
@@ -67,6 +86,7 @@ let message = ref([{ from: 'outher', message: '你好欢迎使用智能助理: �
     .message {
       height: calc(100% - 20px);
       padding: 10px;
+      overflow-y: scroll;
       .self {
         display: flex;
         flex-direction: row-reverse;
