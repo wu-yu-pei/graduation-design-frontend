@@ -26,6 +26,7 @@
 <route lang="yaml">
 meta:
   layout: default
+  name: 系统介绍
 </route>
 
 <script setup></script>
