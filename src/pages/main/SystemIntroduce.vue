@@ -26,6 +26,7 @@
 
     <div class="box-card">
       <Title>完成进度</Title>
+      <p style="font-size: 12px; color: blue; padding-left: 10px;">共 {{allCommits.length}} 次提交</p>
       <div class="content three">
         <el-timeline>
           <template v-for="item in allCommits">
