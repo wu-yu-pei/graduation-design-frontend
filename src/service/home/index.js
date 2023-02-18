@@ -38,8 +38,13 @@ export function createShop(data) {
   });
 }
 
-export function getCommits() {
-  return request.get({
-    url: '/commits',
+export function updateAddressApi(data) {
+  return request.post({
+    url: '/updateAddress',
+    data: {
+      id: data.id,
+      lng: data.lng,
+      lat: data.lat,
+    },
   });
 }
