@@ -72,7 +72,7 @@ function showShopFlow() {
     speed: 150000,
     flowLength: 100000,
     lineColors: function (index, feat) {
-      return feat.link.properties.type === 0 ? ['red'] : ['#25CDEA', '#12BFBF'];
+      return feat.link.properties.type === 0 ? ['#25CDEA'] : ['red', '#ff00ee'];
     },
     maxHeightScale: 0.3, // 弧顶位置比例
     headColor: 'rgba(0, 0, 255, 1)',
@@ -115,7 +115,7 @@ function showShopFlow() {
     unit: 'meter',
     size: [100000, 100000],
     borderWidth: 0,
-    texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png',
+    texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_yellow.png',
     duration: 500,
     animate: true,
   });
@@ -152,8 +152,8 @@ function showShopFlow() {
   breathYellow.setStyle({
     unit: 'meter',
     size: [100000, 100000],
+    texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png',
     borderWidth: 0,
-    texture: 'https://a.amap.com/Loca/static/loca-v2/demos/images/breath_yellow.png',
     duration: 1000,
     animate: true,
   });
