@@ -12,4 +12,5 @@ const appStore = useAppStore();
 if (!appStore.token) {
   router.replace('/login');
 }
+
 </script>
