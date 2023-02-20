@@ -1,6 +1,6 @@
 <template>
   <div class="tabs">
-    <el-tag v-for="(tab, index) of tabs" size="large" :class="{ active: activeIndex == index }" :key="tag" @click="tabClick(tab, index)" :closable="tab.isCanClose" @close="handleClose(tab, index)">
+    <el-tag v-for="(tab, index) of tabs" size="large" :class="{ active: activeIndex == index }" :key="tab" @click="tabClick(tab, index)" :closable="tab.isCanClose" @close="handleClose(tab, index)">
       {{ tab.name }}
     </el-tag>
   </div>
@@ -13,7 +13,7 @@ import { useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-const tabs = useStorage('tabs', [{ name: '系统介绍', path: '/main/SystemIntroduce', isCanClose: false }]);
+const tabs = useStorage('tabs', [{ name: '系统介绍', path: '/main/SystemIntroduce', isCanClose: false }], sessionStorage);
 // const tabs =  reactive([{ name: '系统介绍', path: '/main/SystemIntroduce', isCanClose: false }]);
 let activeIndex = ref(0);
 watch(
@@ -37,7 +37,16 @@ watch(
 
 function handleClose(tab) {
   const index = tabs.value.findIndex((item) => item.name == tab.name);
-  tabs.value.splice(index, 1);
+
+  if (index == activeIndex.value) {
+    tabs.value.splice(index, 1);
+    router.replace(tabs.value[tabs.value.length - 1].path);
+  } else if (index < activeIndex.value) {
+    tabs.value.splice(index, 1);
+    activeIndex.value = activeIndex.value - 1;
+  } else {
+    tabs.value.splice(index, 1);
+  }
 }
 
 function tabClick(tab, index) {
@@ -50,18 +59,25 @@ function tabClick(tab, index) {
 .tabs {
   display: flex;
   flex-shrink: 0;
-  align-items: center;
-  height: 32px;
+  align-items: flex-end;
+  height: 44px;
   padding: 0 20px;
   overflow-y: scroll;
 }
 .el-tag {
+  position: relative;
   cursor: pointer;
   color: #fff;
   background-color: #fff;
   color: #545c64;
   letter-spacing: 3px;
   margin-left: 3px;
+  border-radius: 0;
+  border-bottom: none;
+  &:hover {
+    background-color: #545c64;
+    color: #fff;
+  }
   .el-icon {
     color: #ccc;
   }

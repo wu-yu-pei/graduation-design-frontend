@@ -68,7 +68,7 @@ meta:
 
 <script setup>
 import { useDateFormat } from '@vueuse/core';
-import { findShop } from '../../service/home/index';
+import { findShop, updateAddressApi } from '../../service/home/index';
 
 let mapRef = ref(null);
 let shops = reactive([]);
@@ -96,10 +96,22 @@ function updateAddress(info) {
 }
 
 function updateAddressConfirm() {
-  dialogVisibleAddress.value = false;
   let target = document.querySelector('.amap_lib_placeSearch_list ul li.active');
+  if (!target) {
+    ElMessage({
+      type: 'warning',
+      message: '请选择位置',
+    });
+    return;
+  }
+  dialogVisibleAddress.value = false;
   toAddressInfo.value = toAllResult[target.getAttribute('data-idx')];
   console.log(toAddressInfo.value);
+  updateAddressApi({
+    id: currentShopInfo.value.id,
+    lng: toAddressInfo.value.location.lng,
+    lat: toAddressInfo.value.location.lat,
+  });
 }
 
 function mapAddressLoadComplete() {
@@ -134,10 +146,6 @@ function mapAddressLoadComplete() {
         type: 'error',
       });
     }
-  });
-
-  placeSearch.search('郑州东站', (status, result) => {
-    toAllResult = result.poiList.pois;
   });
 }
 

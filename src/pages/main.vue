@@ -12,7 +12,11 @@
         </el-header>
         <Tab></Tab>
         <el-main>
-          <router-view></router-view>
+          <router-view #default="{ Component }">
+            <keep-alive>
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -22,6 +26,7 @@
 <route lang="yaml">
 meta:
   layout: default
+  name: 系统介绍
 </route>
 
 <script setup></script>
