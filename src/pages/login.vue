@@ -12,6 +12,7 @@ import { login } from '../service/home';
 import useAppStore from '../store/app';
 const appStore = useAppStore();
 login({ account: 0, password: 0, type: 1 }).then((res) => {
+  console.log(11);
   appStore.userInfo = res.data;
   appStore.token = res.data.token;
   localStorage.setItem('token', res.data.token);
