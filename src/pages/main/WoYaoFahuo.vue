@@ -8,10 +8,10 @@
             <el-input v-model="formDate.name" placeholder="请输入物流名称" />
           </el-form-item>
           <el-form-item label="发货地址">
-            <el-input id="start-position" v-model="formDate.start_position" placeholder="请输入物流名称" />
+            <el-input id="start-position" @focus="() => (targetFouce = 1)" v-model="formDate.start_position" placeholder="请输入物流名称" />
           </el-form-item>
           <el-form-item label="收货地址">
-            <el-input id="end-position" v-model="formDate.end_position" placeholder="请输入物流名称" />
+            <el-input id="end-position" @focus="() => (targetFouce = 2)" v-model="formDate.end_position" placeholder="请输入物流名称" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">发货</el-button>
@@ -40,7 +40,10 @@ import useAppStore from '../../store/app';
 const mapRef = ref(null);
 let buttonRef = ref(null);
 let startAllResult = reactive();
+let startInfo = reactive();
 let endAllResult = reactive();
+let endInfo = reactive();
+let targetFouce = ref();
 
 const appStore = useAppStore();
 const formDate = reactive({
@@ -80,6 +83,7 @@ function mapLoadComplete() {
   }
 
   function selectEnd(e) {
+    buttonRef.value.style.opacity = 1;
     // 搜索
     placeSearch.search(e.poi.name, (status, result) => {
       endAllResult = result.poiList.pois;
@@ -89,6 +93,24 @@ function mapLoadComplete() {
 
 // 确定地址
 function sureAddress() {
+  const target = document.querySelector('#panel-fahuo .amap_lib_placeSearch_list ul li.active');
+  if (!target) {
+    ElMessage({
+      type: 'warning',
+      message: '请选择位置',
+    });
+    return;
+  }
+  if (!targetFouce.value) return;
+  if (targetFouce.value == 1) {
+    startInfo = startAllResult[target.getAttribute('data-idx')];
+    formDate.start_position = startInfo.address;
+    formDate.start_position_geo = startInfo.location.lng + startInfo.location.lat;
+  } else if (targetFouce.value == 2) {
+    endInfo = endAllResult[target.getAttribute('data-idx')];
+    formDate.end_position = endInfo.address;
+    formDate.end_position_geo = endInfo.location.lng + endInfo.location.lat;
+  }
   buttonRef.value.style.opacity = 0;
   mapRef.value.getMap().clearMap();
 }
@@ -117,8 +139,6 @@ function onSubmit() {
       position: absolute;
       right: 0;
       top: 0;
-      width: 500px;
-      height: 200px;
       z-index: 20;
     }
     .el-button {
