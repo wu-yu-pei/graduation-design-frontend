@@ -49,11 +49,7 @@ let contentEl = ref(null);
 let question = ref('');
 let isLoading = ref(false);
 
-let message = useStorage(
-  'message',
-  [{ from: 'outher', message: '你好欢迎使用智能助理: 使用方法:向我发送物流号即可例如：#23', date: useDateFormat(+new Date(), 'YYYY-MM-DD HH:mm:ss') }],
-  sessionStorage
-);
+let message = useStorage('message', [{ from: 'outher', message: '你好欢迎使用智能助理: 使用方法:向我发送物流号即可例如：#23' }], sessionStorage);
 
 async function send() {
   question.value = question.value.trim();
