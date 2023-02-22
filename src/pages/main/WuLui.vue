@@ -21,7 +21,7 @@ const mapRef = ref(null);
 
 let shops = reactive({});
 
-findShop('0').then((res) => {
+findShop('1').then((res) => {
   shops = res.data;
 });
 

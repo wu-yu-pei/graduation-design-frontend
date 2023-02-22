@@ -20,9 +20,7 @@
             <img src="/image/rabbot.png" alt="" />
             <div>
               <p>智能助理</p>
-              <div class="outher-content">
-                {{ item.message }}
-              </div>
+              <div class="outher-content" v-html="item.message"></div>
             </div>
           </div>
         </div>
@@ -42,20 +40,53 @@ meta:
 import { useStorage } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import useAppStore from '../../store/app';
+import { getInfoByid } from '../../service/home/index';
 
 const appStore = useAppStore();
 const { userInfo } = storeToRefs(appStore);
 let question = ref('');
 
-let message = useStorage('message', [{ from: 'outher', message: '你好欢迎使用智能助理: 使用方法:向我发送物流号即可', date: 1655260176099 }], sessionStorage);
+let message = useStorage('message', [{ from: 'outher', message: '你好欢迎使用智能助理: 使用方法:向我发送物流号即可例如：#23', date: 1655260176099 }], sessionStorage);
 
-function send() {
+async function send() {
+  question.value = question.value.trim();
+  if (!question.value) {
+    return alert('请输入问题');
+  }
   message.value.push({
     from: 'self',
     message: question.value,
     date: +new Date(),
   });
-  if (typeof +question.value != 'number') {
+
+  const tag = question.value.slice(0, 1);
+  const id = question.value.slice(1);
+
+  if (tag == '#' && /^\d*$/.test(id)) {
+    const res = await getInfoByid(id);
+    console.log(res.data.length);
+    if (res.data.length != 0) {
+      const { id, start_position, end_position, name, current_position, current_time, status } = res.data[0];
+      message.value.push({
+        from: 'outher',
+        message: `
+          物流编号：#${id}<br/>
+
+          状态：${status == 0 ? '已完成' : status == 1 ? '运输中' : '已拦截'}<br/>
+          商品名称：${name}<br/>
+          发货地址：${start_position}<br/>
+          收货地址：${end_position}<br/>
+        `,
+        date: +new Date(),
+      });
+    } else {
+      message.value.push({
+        from: 'outher',
+        message: '抱歉，没有该物流信息！',
+        date: +new Date(),
+      });
+    }
+  } else {
     setTimeout(() => {
       message.value.push({
         from: 'outher',

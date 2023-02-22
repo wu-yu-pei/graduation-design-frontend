@@ -104,12 +104,13 @@ function sureAddress() {
   if (!targetFouce.value) return;
   if (targetFouce.value == 1) {
     startInfo = startAllResult[target.getAttribute('data-idx')];
+    console.log(startInfo);
     formDate.start_position = startInfo.address;
-    formDate.start_position_geo = startInfo.location.lng + startInfo.location.lat;
+    formDate.start_position_geo = startInfo.location.lng + ',' + startInfo.location.lat;
   } else if (targetFouce.value == 2) {
     endInfo = endAllResult[target.getAttribute('data-idx')];
     formDate.end_position = endInfo.address;
-    formDate.end_position_geo = endInfo.location.lng + endInfo.location.lat;
+    formDate.end_position_geo = endInfo.location.lng + ',' + endInfo.location.lat;
   }
   buttonRef.value.style.opacity = 0;
   mapRef.value.getMap().clearMap();

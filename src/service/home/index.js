@@ -45,3 +45,12 @@ export function updateAddressApi(data) {
     },
   });
 }
+
+export function getInfoByid(id) {
+  return request.post({
+    url: '/getInfoById',
+    data: {
+      id,
+    },
+  });
+}
