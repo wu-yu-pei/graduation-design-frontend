@@ -75,6 +75,8 @@ function exec() {
       margin-top: 20px;
       height: 50px;
       width: 100%;
+      letter-spacing: 5px;
+      font-size: 16px;
     }
   }
 }
