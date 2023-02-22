@@ -114,6 +114,7 @@ function updateAddressConfirm() {
     id: currentShopInfo.value.id,
     lng: toAddressInfo.value.location.lng,
     lat: toAddressInfo.value.location.lat,
+    current_position: toAddressInfo.value.name,
   });
 }
 
@@ -181,7 +182,7 @@ function getRoundLine() {
   const allFollowPoints = [];
   const startPos = currentShopInfo.value.start_position_geo.split(',');
   const endPos = currentShopInfo.value.end_position_geo.split(',');
-  const currentPos = currentShopInfo.value.current_position_geo.split(',');
+  const currentPos = currentShopInfo.value.current_position_geo?.split(',');
 
   // 绘制路线
   driving.search(startPos, endPos, async function (status, result) {
@@ -223,7 +224,7 @@ function getRoundLine() {
         strokeColor: '#28F', //线颜色
         strokeWeight: 6, //线宽
       });
-
+      if (!currentPos) return;
       // 已通过的轨迹
       var passedPolyline = new AMap.Polyline({
         map: mapRef.value.getMap(),

@@ -38,11 +38,7 @@ export function createShop(data) {
 export function updateAddressApi(data) {
   return request.post({
     url: '/updateAddress',
-    data: {
-      id: data.id,
-      lng: data.lng,
-      lat: data.lat,
-    },
+    data,
   });
 }
 
