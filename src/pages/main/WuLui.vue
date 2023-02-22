@@ -16,12 +16,15 @@ meta:
 </route>
 
 <script setup>
+import useAppStore from '../../store/app';
+
 import { findShop } from '../../service/home';
 const mapRef = ref(null);
 
+let appStore = useAppStore();
 let shops = reactive({});
 
-findShop('1').then((res) => {
+findShop(appStore.userInfo.id).then((res) => {
   shops = res.data;
 });
 

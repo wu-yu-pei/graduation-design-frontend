@@ -70,12 +70,14 @@ meta:
 <script setup>
 import { useDateFormat } from '@vueuse/core';
 import { findShop, updateAddressApi } from '../../service/home/index';
+import useAppStore from '../../store/app';
 
+let appStore = useAppStore();
 let mapRef = ref(null);
 let shops = reactive([]);
 let tabelIsLoading = ref(true);
 
-findShop('0').then((res) => {
+findShop(appStore.userInfo.id).then((res) => {
   shops.push(...res.data);
   tabelIsLoading.value = false;
   shops.forEach((item) => {
