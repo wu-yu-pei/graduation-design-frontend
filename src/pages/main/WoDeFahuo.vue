@@ -42,8 +42,11 @@
 
     <el-dialog v-model="dialogVisibleAddress" title="位置更新" width="90%" height="80vh" draggable :destroy-on-close="true">
       <div class="content">
-        <el-input v-model="toAddress" type="text" id="addressSelect" />
-        <div id="panel"></div>
+        <el-select v-model="toAddress" placeholder="请选择位置" @change="selectChange">
+          <template v-for="item in allAddress">
+            <el-option :disabled="item.disabled" :label="item.current_position" :value="item.current_position" />
+          </template>
+        </el-select>
         <Map ref="mapRef" @mapLoadComplete="mapAddressLoadComplete"></Map>
       </div>
       <template #footer>
@@ -77,20 +80,25 @@ let mapRef = ref(null);
 let shops = reactive([]);
 let tabelIsLoading = ref(true);
 
-findShop(appStore.userInfo.id).then((res) => {
-  shops.push(...res.data);
-  tabelIsLoading.value = false;
-  shops.forEach((item) => {
-    item.current_time = useDateFormat(item.current_time * 1, 'YYYY-MM-DD HH:mm:ss');
+function getShops() {
+  findShop(appStore.userInfo.id).then((res) => {
+    shops.length = 0;
+    shops.push(...res.data);
+    tabelIsLoading.value = false;
+    shops.forEach((item) => {
+      item.current_time = useDateFormat(item.current_time * 1, 'YYYY-MM-DD HH:mm:ss');
+    });
   });
-});
+}
+getShops();
 
 let currentShopInfo = ref();
 // 1.0 更新位置
 // 要更新的地点搜索
 let toAddress = ref('');
-let toAllResult = reactive();
 let toAddressInfo = ref('');
+let allAddress = reactive([]);
+let targetMarker = '';
 // 更新位置
 let dialogVisibleAddress = ref(false);
 function updateAddress(info) {
@@ -98,59 +106,69 @@ function updateAddress(info) {
   currentShopInfo.value = info;
 }
 
-function updateAddressConfirm() {
-  let target = document.querySelector('.amap_lib_placeSearch_list ul li.active');
-  if (!target) {
-    ElMessage({
-      type: 'warning',
-      message: '请选择位置',
-    });
-    return;
+function getList() {
+  const driving = new AMap.Driving({
+    map: mapRef.value.getMap(),
+    policy: AMap.DrivingPolicy.LEAST_TIME,
+    showTraffic: false,
+    autoFitView: false,
+  });
+  const startPos = currentShopInfo.value.start_position_geo.split(',');
+  const endPos = currentShopInfo.value.end_position_geo.split(',');
+
+  driving.search(startPos, endPos, async function (status, result) {
+    if (status === 'complete') {
+      console.log(result);
+      const _index = result.routes[0].steps.findIndex((item) => item.end_location.lng + ',' + item.end_location.lat == currentShopInfo.value.current_position_geo);
+      console.log(_index);
+      result.routes[0].steps.forEach((item, index) => {
+        allAddress.push({
+          current_position: '|' + index + '|' + (item.road || '未知路段') + '——' + item.cities[0].name,
+          lng: item.end_location.lng,
+          lat: item.end_location.lat,
+          // disabled: index <= _index ? true : false,
+          disabled: false,
+        });
+      });
+    }
+  });
+}
+
+function selectChange(val) {
+  toAddressInfo.value = allAddress.find((item) => item.current_position == val);
+  if (targetMarker) {
+    mapRef.value.getMap().setCenter(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
+    return targetMarker.setPosition(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
   }
-  dialogVisibleAddress.value = false;
-  toAddressInfo.value = toAllResult[target.getAttribute('data-idx')];
-  console.log(toAddressInfo.value);
+  targetMarker = new AMap.Marker({
+    map: mapRef.value.getMap(),
+    icon: new AMap.Icon({
+      image: '/image/project_icon2.png',
+      imageSize: new AMap.Size(30, 30),
+    }),
+    size: new AMap.Size(30, 30),
+    anchor: 'center',
+  });
+  targetMarker.setPosition(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
+}
+
+function updateAddressConfirm() {
   updateAddressApi({
     id: currentShopInfo.value.id,
-    lng: toAddressInfo.value.location.lng,
-    lat: toAddressInfo.value.location.lat,
-    current_position: toAddressInfo.value.name,
+    lng: toAddressInfo.value.lng,
+    lat: toAddressInfo.value.lat,
+    current_position: toAddressInfo.value.current_position.replace(/\|\d*\|/, ''),
   });
+  dialogVisibleAddress.value = false;
+  getShops();
 }
 
 function mapAddressLoadComplete() {
   mapRef.value.getMap().clearMap();
-
-  // 搜索插件
-  const placeSearch = new AMap.PlaceSearch({
-    map: mapRef.value.getMap(),
-    pageSize: 5, // 单页显示结果条数
-    pageIndex: 1, // 页码
-    panel: 'panel', // 结果列表将在此容器中进行展示。
-    autoFitView: true,
-  });
-  // 提示插件
-  const autoCompleteSelect = new AMap.AutoComplete({
-    input: 'addressSelect',
-  });
-  // 监听选择
-  autoCompleteSelect.on('select', (e) => {
-    console.log(e);
-    // 搜索
-    placeSearch.search(e.poi.name, (status, result) => {
-      toAllResult = result.poiList.pois;
-    });
-  });
-
-  autoCompleteSelect.on('error', (e) => {
-    if (e.type == 'error') {
-      ElMessage({
-        message: e.info,
-        grouping: true,
-        type: 'error',
-      });
-    }
-  });
+  toAddress.value = '';
+  toAddressInfo.value = '';
+  getList();
+  getShops();
 }
 
 // 2.0运输路线
@@ -187,6 +205,7 @@ function getRoundLine() {
   // 绘制路线
   driving.search(startPos, endPos, async function (status, result) {
     if (status === 'complete') {
+      console.log(result);
       result.routes.forEach((route) => {
         allFollowPoints.push(...route.steps);
       });
@@ -268,7 +287,7 @@ function sleep(time) {
   });
 }
 
-// 拦截
+// 3.0拦截
 function lanjie() {
   console.log(11);
   ElMessage({
@@ -297,7 +316,7 @@ function lanjie() {
 .content {
   position: relative;
   height: 70vh;
-  .el-input {
+  .el-select {
     position: absolute;
     width: 300px;
     top: -50px;
