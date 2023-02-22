@@ -73,6 +73,14 @@ function mapLoadComplete() {
 
   autoCompleteStart.on('select', selectStart); //注册监听，当选中某条记录时会触发
   autoCompleteEnd.on('select', selectEnd); //注册监听，当选中某条记录时会触发
+  autoCompleteStart.on('error', errorMessage);
+  autoCompleteEnd.on('error', errorMessage);
+  function errorMessage() {
+    return ElMessage({
+      type: 'warning',
+      message: '当日搜索次数已用完！',
+    });
+  }
 
   function selectStart(e) {
     buttonRef.value.style.opacity = 1;
