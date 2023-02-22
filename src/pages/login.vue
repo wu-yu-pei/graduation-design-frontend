@@ -62,7 +62,7 @@ function exec() {
     letter-spacing: 25px;
     font-size: 40px;
     font-weight: 800;
-    text-shadow: 0 4px 6px #6159d5, -4px 0 6px #9daf0f;
+    text-shadow: 0 4px 6px #6159d5, -4px 0 6px #bee1ff;
     color: #fff;
   }
   .form-body {
