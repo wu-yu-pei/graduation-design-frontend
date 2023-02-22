@@ -4,7 +4,11 @@ import App from './App.vue';
 //  全局 css
 import './assets/css/index.css';
 
-// unocss 
+// 进度调
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css'
+
+// unocss
 import 'uno.css';
 
 // normalize.css
@@ -26,6 +30,13 @@ const routes = setupLayouts(generatedRoutes);
 const router = createRouter({
   routes,
   history: createWebHistory(),
+});
+
+router.beforeEach(() => {
+  NProgress.start();
+});
+router.afterEach(() => {
+  NProgress.done();
 });
 
 const app = createApp(App);
