@@ -62,6 +62,8 @@ function exec() {
     letter-spacing: 5px;
     font-size: 24px;
     font-weight: 800;
+    text-shadow: 0 4px 3px #000, -4px 0 6px #000;
+    color: #fff;
   }
   .form-body {
     width: 100%;
