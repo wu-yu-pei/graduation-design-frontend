@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="panel">
-      <div class="header">Login</div>
+      <div class="header">物流追踪系统</div>
       <div class="form-body">
         <el-input v-model="formDate.account" size="large" placeholder="Please Input" :prefix-icon="User" />
         <el-input v-model="formDate.password" type="password" size="large" placeholder="Please Input" :prefix-icon="Lock" />
