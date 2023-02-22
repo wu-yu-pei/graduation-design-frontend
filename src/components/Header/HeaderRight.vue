@@ -16,6 +16,7 @@ const appStore = useAppStore();
 const { userInfo } = storeToRefs(appStore);
 
 function exit() {
+  sessionStorage.clear();
   localStorage.clear();
   location.reload();
 }
