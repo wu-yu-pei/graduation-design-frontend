@@ -152,7 +152,7 @@ function selectChange(val) {
   targetMarker.setPosition(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
 }
 
-function updateAddressConfirm() {
+async function updateAddressConfirm() {
   updateAddressApi({
     id: currentShopInfo.value.id,
     lng: toAddressInfo.value.lng,
@@ -160,7 +160,7 @@ function updateAddressConfirm() {
     current_position: toAddressInfo.value.current_position.replace(/\|\d*\|/, ''),
   });
   dialogVisibleAddress.value = false;
-  getShops();
+  await getShops();
 }
 
 function mapAddressLoadComplete() {
