@@ -153,7 +153,7 @@ function selectChange(val) {
 }
 
 async function updateAddressConfirm() {
-  updateAddressApi({
+  await updateAddressApi({
     id: currentShopInfo.value.id,
     lng: toAddressInfo.value.lng,
     lat: toAddressInfo.value.lat,

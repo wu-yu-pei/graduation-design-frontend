@@ -167,6 +167,7 @@ function showShopFlow() {
 
 function showShopTransport() {
   const map = mapRef.value.getMap();
+  map.clearMap()
   mapRef.value.getLoca().clear();
   map.setZoom(6);
   map.setPitch(0);
