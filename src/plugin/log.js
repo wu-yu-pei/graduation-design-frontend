@@ -8,8 +8,10 @@ export default function markdownPlugin() {
 
     // 代码转译，这个函数的功能类似于 `webpack` 的 `loader`
     transform(code, id, opt) {
-      const res = code.replaceAll(/\/\/\/(\w{1,20})/g, (a, b, c, d) => {
-        return `console.log('${b} ->',${b})`;
+      let str = '';
+      const res = code.replaceAll(/\/\/\/([a-zA-Z,]{1,20})/g, (a, b, c, d) => {
+        b.split(',').forEach((item) => (str += `console.log('${item} ->',${item});`));
+        return str;
       });
       return res;
     },
