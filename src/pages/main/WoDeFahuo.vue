@@ -119,17 +119,15 @@ function getList() {
 
   driving.search(startPos, endPos, async function (status, result) {
     if (status === 'complete') {
-      console.log(result);
-      allAddress.length = 0
+      allAddress.length = 0;
       const _index = result.routes[0].steps.findIndex((item) => item.end_location.lng + ',' + item.end_location.lat == currentShopInfo.value.current_position_geo);
-      console.log(_index);
+
       result.routes[0].steps.forEach((item, index) => {
         allAddress.push({
-          current_position: '|' + index + '|' + (item.road || '未知路段') + '——' + item.cities[0].name,
+          current_position: '|' + index + '|' + (item.road || '未知路段') + '——' + (item.cities ? item.cities[0].name : '未知城市'),
           lng: item.end_location.lng,
           lat: item.end_location.lat,
-          // disabled: index <= _index ? true : false,
-          disabled: false,
+          disabled: index <= _index ? true : false,
         });
       });
     }
@@ -140,7 +138,7 @@ function selectChange(val) {
   toAddressInfo.value = allAddress.find((item) => item.current_position == val);
   if (targetMarker) {
     mapRef.value.getMap().setCenter(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
-    mapRef.value.getMap().add(targetMarker)
+    mapRef.value.getMap().add(targetMarker);
     return targetMarker.setPosition(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
   }
   targetMarker = new AMap.Marker({
@@ -151,7 +149,7 @@ function selectChange(val) {
     size: new AMap.Size(30, 30),
     anchor: 'center',
   });
-  mapRef.value.getMap().add(targetMarker)
+  mapRef.value.getMap().add(targetMarker);
   targetMarker.setPosition(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
 }
 
