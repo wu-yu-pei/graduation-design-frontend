@@ -1,10 +1,10 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 
-//  全局 css
+//  global css
 import './assets/css/index.css';
 
-// 进度调
+// progress
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css'
 
