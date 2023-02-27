@@ -78,7 +78,7 @@ function mapLoadComplete() {
   function errorMessage() {
     return ElMessage({
       type: 'warning',
-      message: '当日搜索次数已用完！',
+      message: '当日搜索次数已用完！明天再来吧',
     });
   }
 
@@ -121,13 +121,29 @@ function sureAddress() {
     formDate.end_position_geo = endInfo.location.lng + ',' + endInfo.location.lat;
   }
   buttonRef.value.style.opacity = 0;
+  document.querySelector('#panel-fahuo > div').remove();
   mapRef.value.getMap().clearMap();
 }
 // 提交
-function onSubmit() {
-  createShop({ ...formDate, uid: appStore.userInfo.id, time: +new Date() }).then((res) => {
-    console.log(res);
-  });
+async function onSubmit() {
+  if(!formDate.name || !formDate.end_position || !formDate.end_position_geo || !formDate.start_position || !formDate.start_position_geo) {
+    return  ElMessage({
+      type: 'error',
+      message: '请输入完整信息',
+    });
+  }
+  let res = await createShop({ ...formDate, uid: appStore.userInfo.id, time: +new Date() });
+  if (res.msg == '发货成功') {
+    ElMessage({
+      type: 'success',
+      message: '发货成功',
+    });
+    formDate.end_position = ''
+    formDate.end_position_geo = ''
+    formDate.start_position = ''
+    formDate.start_position_geo = ''
+    formDate.name = ''
+  }
 }
 </script>
 

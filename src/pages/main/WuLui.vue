@@ -7,6 +7,11 @@
       <el-button @click="showAllShop">全部物流</el-button>
       <el-button @click="showCount">数量分布</el-button>
     </div>
+    <div class="styles">
+      <el-radio-group v-model="currentStyle" @change="radioChange">
+        <el-radio v-for="item in styles" :label="item.name" size="large">{{ item.label }}</el-radio>
+      </el-radio-group>
+    </div>
   </div>
 </template>
 
@@ -22,6 +27,25 @@ import { findShop } from '../../service/home';
 const mapRef = ref(null);
 
 let appStore = useAppStore();
+let currentStyle = ref('normal');
+let styles = [
+  { label: '标准', name: 'normal' },
+  { label: '幻影黑', name: 'dark' },
+  { label: '月光银', name: 'light' },
+  { label: '远山黛', name: 'whitesmoke' },
+  { label: '草色青', name: 'fresh' },
+  { label: '雅士灰', name: 'grey' },
+  { label: '涂鸦', name: 'graffiti' },
+  { label: '马卡龙', name: 'macaron' },
+  { label: '靛青蓝', name: 'blue' },
+  { label: '极夜蓝', name: 'darkblue' },
+  { label: '酱籽', name: 'wine' },
+];
+function radioChange(style) {
+  console.log(`amap://styles/${style}`);
+  mapRef.value.getMap().setMapStyle(`amap://styles/${style}`);
+}
+
 let shops = reactive({});
 
 findShop(appStore.userInfo.id).then((res) => {
@@ -167,7 +191,7 @@ function showShopFlow() {
 
 function showShopTransport() {
   const map = mapRef.value.getMap();
-  map.clearMap()
+  map.clearMap();
   mapRef.value.getLoca().clear();
   map.setZoom(6);
   map.setPitch(0);
@@ -314,6 +338,14 @@ function showCount() {
     position: absolute;
     top: 10px;
     left: 10px;
+  }
+  .styles {
+    width: 100px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #fff;
+    padding: 0 10px;
   }
 }
 </style>
