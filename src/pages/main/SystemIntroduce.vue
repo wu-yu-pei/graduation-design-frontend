@@ -27,7 +27,7 @@
     <div class="box-card">
       <Title>完成进度</Title>
       <p style="font-size: 12px; color: blue; padding-left: 10px">
-        共 <u>{{ allCommits && allCommits.length }}</u> 次提交 已开发 <u>{{ allday }}</u> 天
+        已开发 <u>{{ allday }}</u> 天 最近 <u>{{ allCommits && allCommits.length }}</u> 次提交：
       </p>
       <div class="content three">
         <el-timeline>
@@ -38,7 +38,10 @@
                   <el-avatar :src="item.author.avatar_url" />
                   <h4>{{ item.commit.author.name }}</h4>
                 </div>
-                <p>提交了代码，并备注：{{ item.commit.message }}</p>
+                <p>
+                  提交了代码，并备注：{{ item.commit.message }}
+                  <a :href="item.html_url" target="_blank">详情</a>
+                </p>
               </div>
             </el-timeline-item>
           </template>
