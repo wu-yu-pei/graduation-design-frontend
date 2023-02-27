@@ -1,7 +1,7 @@
 <template>
   <div class="header-left">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/main/SystemIntroduce' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/SystemIntroduce' }">首页</el-breadcrumb-item>
       <Transition>
         <el-breadcrumb-item v-if="isAnimation">
           <a href="javascript:;">{{ currentMenu.title }}</a>
@@ -15,26 +15,26 @@
 import { useRoute } from 'vue-router';
 
 const menu = [
-  { title: '系统介绍', index: '/main/SystemIntroduce', icon: 'House' },
-  { title: '我的货物', index: '/main/MyShops', icon: 'ShoppingBag' },
+  { title: '系统介绍', index: '/SystemIntroduce', icon: 'House' },
+  { title: '我的货物', index: '/MyShops', icon: 'ShoppingBag' },
   {
     title: '物流管理',
     icon: 'House',
     children: [
       {
         title: '我要发货',
-        index: '/main/WoYaoFahuo',
+        index: '/WoYaoFahuo',
         icon: 'Coordinate',
       },
       {
         title: '我的物流',
-        index: '/main/WoDeFahuo',
+        index: '/WoDeFahuo',
         icon: 'Van',
       },
     ],
   },
-  { title: '物流流向', index: '/main/WuLui', icon: 'Refresh' },
-  { title: '智能物流', index: '/main/ZhiNengWuLui', icon: 'Headset' },
+  { title: '物流流向', index: '/WuLui', icon: 'Refresh' },
+  { title: '智能物流', index: '/ZhiNengWuLui', icon: 'Headset' },
 ];
 const isAnimation = ref(true);
 const route = useRoute();
@@ -57,7 +57,7 @@ function findNameByPath(menu, path) {
     }
     return pur;
   }, []);
-  return map.find((item) => item.index == path);
+  return map.find((item) => item.index == path) || menu[0];
 }
 </script>
 

@@ -33,28 +33,29 @@
 import { ref } from 'vue';
 
 const menu = [
-  { title: '系统介绍', index: '/main/SystemIntroduce', icon: 'House' },
-  { title: '我的货物', index: '/main/MyShops', icon: 'ShoppingBag' },
+  { title: '系统介绍', index: '/SystemIntroduce', icon: 'House' },
+  { title: '我的货物', index: '/MyShops', icon: 'ShoppingBag' },
   {
     title: '物流管理',
-    index: '/main/WoYaoFahuo',
+    index: '/WoYaoFahuo',
     icon: 'House',
     children: [
       {
         title: '我要发货',
-        index: '/main/WoYaoFahuo',
+        index: '/WoYaoFahuo',
         icon: 'Coordinate',
       },
       {
         title: '我的物流',
-        index: '/main/WoDeFahuo',
+        index: '/WoDeFahuo',
         icon: 'Van',
       },
     ],
   },
-  { title: '物流流向', index: '/main/WuLui', icon: 'Refresh' },
-  { title: '智能物流', index: '/main/ZhiNengWuLui', icon: 'Headset' },
+  { title: '物流流向', index: '/WuLui', icon: 'Refresh' },
+  { title: '智能物流', index: '/ZhiNengWuLui', icon: 'Headset' },
 ];
+
 let defaultActive = ref(menu[0].index);
 const route = useRoute();
 
@@ -67,7 +68,7 @@ function findIndexByPath(menu, path) {
     }
     return pur;
   }, []);
-  return map.find((item) => item.index == path).index;
+  return map.find((item) => item.index == path)?.index || menu[0].index;
 }
 watch(
   route,

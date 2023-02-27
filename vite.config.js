@@ -13,7 +13,14 @@ import Unocss from 'unocss/vite';
 export default defineConfig({
   plugins: [
     vue({}),
-    Pages({}),
+    Pages({
+      extendRoute(route) {
+        if (route.path === '/') {
+          route.redirect = '/SystemIntroduce';
+          return route;
+        }
+      },
+    }),
     Unocss(),
     Layouts(),
     AutoImport({

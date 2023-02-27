@@ -20,7 +20,7 @@ const router = useRouter();
 const appStore = useAppStore();
 const isLoading = ref(false);
 if (localStorage.getItem('token')) {
-  router.push('/main/SystemIntroduce');
+  router.push('/SystemIntroduce');
 }
 const formDate = reactive({
   account: '0',
@@ -33,7 +33,7 @@ function exec() {
     appStore.userInfo = res.data;
     appStore.token = res.data.token;
     localStorage.setItem('token', res.data.token);
-    router.push('/main/SystemIntroduce');
+    router.push('/SystemIntroduce');
     isLoading.value = false;
   });
 }
