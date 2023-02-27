@@ -7,6 +7,8 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
+import logPlugin from './src/plugin/log'
+
 import Unocss from 'unocss/vite';
 
 // https://vitejs.dev/config/
@@ -31,6 +33,7 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    logPlugin()
   ],
   server: {
     port: 5173,
