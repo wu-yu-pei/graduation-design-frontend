@@ -104,6 +104,7 @@ let dialogVisibleAddress = ref(false);
 function updateAddress(info) {
   dialogVisibleAddress.value = true;
   currentShopInfo.value = info;
+  console.log(currentShopInfo.value);
 }
 
 function getList() {
@@ -119,6 +120,7 @@ function getList() {
   driving.search(startPos, endPos, async function (status, result) {
     if (status === 'complete') {
       console.log(result);
+      allAddress.length = 0
       const _index = result.routes[0].steps.findIndex((item) => item.end_location.lng + ',' + item.end_location.lat == currentShopInfo.value.current_position_geo);
       console.log(_index);
       result.routes[0].steps.forEach((item, index) => {
@@ -138,10 +140,10 @@ function selectChange(val) {
   toAddressInfo.value = allAddress.find((item) => item.current_position == val);
   if (targetMarker) {
     mapRef.value.getMap().setCenter(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
+    mapRef.value.getMap().add(targetMarker)
     return targetMarker.setPosition(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
   }
   targetMarker = new AMap.Marker({
-    map: mapRef.value.getMap(),
     icon: new AMap.Icon({
       image: '/image/project_icon2.png',
       imageSize: new AMap.Size(30, 30),
@@ -149,6 +151,7 @@ function selectChange(val) {
     size: new AMap.Size(30, 30),
     anchor: 'center',
   });
+  mapRef.value.getMap().add(targetMarker)
   targetMarker.setPosition(new AMap.LngLat(toAddressInfo.value.lng, toAddressInfo.value.lat));
 }
 
