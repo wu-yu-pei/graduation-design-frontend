@@ -8,7 +8,6 @@ import useAppStore from './store/app';
 
 const router = useRouter();
 const appStore = useAppStore();
-///|router,appStore
 if (!appStore.token) {
   router.replace('/login');
 }
