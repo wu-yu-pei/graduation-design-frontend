@@ -59,3 +59,19 @@ export function removeById(id) {
     },
   });
 }
+
+export function addATransportInfo(data) {
+  return request.post({
+    url: '/addATransportInfo',
+    data,
+  });
+}
+
+export function getTransportInfo(id) {
+  return request.post({
+    url: '/getTransportInfo',
+    params: {
+      id,
+    },
+  });
+}

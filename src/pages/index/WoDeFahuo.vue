@@ -60,6 +60,12 @@
     <el-dialog v-model="dialogVisibleLine" title="运输路线" width="90%" height="80vh" draggable :destroy-on-close="true">
       <div class="content">
         <Map ref="mapRef" @mapLoadComplete="mapLoadComplete"></Map>
+        <ul class="info" v-if="currentLine && currentLine.length">
+          <li v-for="(item, index) in currentLine">
+            <span>{{ index == currentLine.length - 1 ? '（开始发货）' : '' }}</span>
+            {{ item.current_time }} 到达 {{ item.current_position }}
+          </li>
+        </ul>
       </div>
     </el-dialog>
 
@@ -82,7 +88,7 @@ meta:
 
 <script setup>
 import { useDateFormat } from '@vueuse/core';
-import { findShop, updateAddressApi, removeById } from '../../service/home/index';
+import { findShop, updateAddressApi, removeById, addATransportInfo, getTransportInfo } from '../../service/home/index';
 import useAppStore from '../../store/app';
 
 let appStore = useAppStore();
@@ -169,8 +175,19 @@ async function updateAddressConfirm() {
     lat: toAddressInfo.value.lat,
     current_position: toAddressInfo.value.current_position.replace(/\|\d*\|/, ''),
   });
+  ///toAddressInfo.value
+  await addATransportInfo({
+    id: currentShopInfo.value.id,
+    current_time: +new Date(),
+    current_position: toAddressInfo.value.current_position.replace(/\|\d*\|/, ''),
+    current_position_geo: toAddressInfo.value.lng + ',' + toAddressInfo.value.lat,
+  });
   dialogVisibleAddress.value = false;
   await getShops();
+  ElMessage({
+    type: 'success',
+    message: '更新成功',
+  });
 }
 
 function mapAddressLoadComplete() {
@@ -183,6 +200,7 @@ function mapAddressLoadComplete() {
 
 // 2.0运输路线
 let dialogVisibleLine = ref(false);
+let currentLine = ref();
 function showLine(info) {
   dialogVisibleLine.value = true;
   currentShopInfo.value = info;
@@ -197,7 +215,7 @@ function mapLoadComplete() {
   }, 1000);
 }
 
-function getRoundLine() {
+async function getRoundLine() {
   mapRef.value.getMap().setZoom(4);
 
   const driving = new AMap.Driving({
@@ -287,6 +305,12 @@ function getRoundLine() {
       infoWindow.open(mapRef.value.getMap(), completePath[completePath.length - 1]);
     }
   });
+
+  const res = await getTransportInfo(currentShopInfo.value.id);
+  currentLine.value = res.data.data;
+  currentLine.value.forEach((item) => {
+    item.current_time = useDateFormat(item.current_time * 1, 'YYYY-MM-DD HH:mm:ss');
+  });
 }
 
 function sleep(time) {
@@ -371,6 +395,28 @@ async function remove() {
     width: 500px;
     height: 200px;
     z-index: 20;
+  }
+  .info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    outline: 1px solid blue;
+    margin: 0;
+    padding: 0;
+    padding: 0 10px;
+    max-height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 255, 0.1);
+    li {
+      span {
+        color: blue;
+      }
+      list-style: '↑';
+      margin: 15px 0;
+      padding-left: 5px;
+      color: #000;
+      font-size: 16px;
+    }
   }
 }
 </style>
