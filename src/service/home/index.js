@@ -50,3 +50,12 @@ export function getInfoByid(id) {
     },
   });
 }
+
+export function removeById(id) {
+  return request.get({
+    url: '/delete',
+    params: {
+      id,
+    },
+  });
+}

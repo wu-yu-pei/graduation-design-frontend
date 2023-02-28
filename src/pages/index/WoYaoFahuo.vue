@@ -132,7 +132,7 @@ async function onSubmit() {
     });
   }
   let res = await createShop({ ...formDate, uid: appStore.userInfo.id, time: +new Date() });
-  if (res.msg == '发货成功') {
+  if (res.data.msg == '发货成功') {
     ElMessage({
       type: 'success',
       message: '发货成功',

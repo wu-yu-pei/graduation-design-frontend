@@ -30,7 +30,7 @@
           </el-table-column>
           <el-table-column fixed="right" prop="status" label="操作" width="500">
             <template #default="scope">
-              <el-button icon="Delete" type="danger" plain>删除</el-button>
+              <el-button icon="Delete" type="danger" plain @click="showDeleteDilog(scope.row.id)">删除</el-button>
               <el-button v-if="scope.row.status == 1" type="danger" plain @click="lanjie(scope.row.id)">拦截</el-button>
               <el-button v-if="scope.row.status == 1" type="primary" plain @click="updateAddress(scope.row)">更新位置</el-button>
               <el-button type="success" plain @click="showLine(scope.row)">运输路线</el-button>
@@ -62,6 +62,16 @@
         <Map ref="mapRef" @mapLoadComplete="mapLoadComplete"></Map>
       </div>
     </el-dialog>
+
+    <el-dialog v-model="isSureDelete" title="删除" width="30%" align-center>
+      <span>确定删除吗</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="hiddenDeleteDilog">取消</el-button>
+          <el-button type="primary" @click="remove"> 确定 </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -72,7 +82,7 @@ meta:
 
 <script setup>
 import { useDateFormat } from '@vueuse/core';
-import { findShop, updateAddressApi } from '../../service/home/index';
+import { findShop, updateAddressApi, removeById } from '../../service/home/index';
 import useAppStore from '../../store/app';
 
 let appStore = useAppStore();
@@ -294,6 +304,38 @@ function lanjie() {
     type: 'success',
     message: 'test:拦截成功',
   });
+}
+
+// 4.0删除
+let isSureDelete = ref(false);
+let curShopId = ref();
+function showDeleteDilog(id) {
+  isSureDelete.value = true;
+  curShopId.value = id;
+}
+
+function hiddenDeleteDilog() {
+  isSureDelete.value = false;
+  curShopId.value = '';
+}
+
+async function remove() {
+  isSureDelete.value = false;
+  let res = await removeById(curShopId.value);
+
+  if (res.data.code == 200) {
+    ElMessage({
+      type: 'success',
+      message: res.data.msg,
+    });
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除失败',
+    });
+  }
+
+  await getShops();
 }
 </script>
 
