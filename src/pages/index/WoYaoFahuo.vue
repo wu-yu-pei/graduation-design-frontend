@@ -98,7 +98,6 @@ function mapLoadComplete() {
     });
   }
 }
-
 // 确定地址
 function sureAddress() {
   const target = document.querySelector('#panel-fahuo .amap_lib_placeSearch_list ul li.active');
@@ -112,12 +111,12 @@ function sureAddress() {
   if (!targetFouce.value) return;
   if (targetFouce.value == 1) {
     startInfo = startAllResult[target.getAttribute('data-idx')];
-    console.log(startInfo);
-    formDate.start_position = startInfo.address;
+    ///startInfo
+    formDate.start_position = startInfo.cityname + startInfo.adname + startInfo.address;
     formDate.start_position_geo = startInfo.location.lng + ',' + startInfo.location.lat;
   } else if (targetFouce.value == 2) {
     endInfo = endAllResult[target.getAttribute('data-idx')];
-    formDate.end_position = endInfo.address;
+    formDate.end_position = endInfo.cityname + endInfo.adname +  endInfo.address;
     formDate.end_position_geo = endInfo.location.lng + ',' + endInfo.location.lat;
   }
   buttonRef.value.style.opacity = 0;
@@ -126,8 +125,8 @@ function sureAddress() {
 }
 // 提交
 async function onSubmit() {
-  if(!formDate.name || !formDate.end_position || !formDate.end_position_geo || !formDate.start_position || !formDate.start_position_geo) {
-    return  ElMessage({
+  if (!formDate.name || !formDate.end_position || !formDate.end_position_geo || !formDate.start_position || !formDate.start_position_geo) {
+    return ElMessage({
       type: 'error',
       message: '请输入完整信息',
     });
@@ -138,11 +137,11 @@ async function onSubmit() {
       type: 'success',
       message: '发货成功',
     });
-    formDate.end_position = ''
-    formDate.end_position_geo = ''
-    formDate.start_position = ''
-    formDate.start_position_geo = ''
-    formDate.name = ''
+    formDate.end_position = '';
+    formDate.end_position_geo = '';
+    formDate.start_position = '';
+    formDate.start_position_geo = '';
+    formDate.name = '';
   }
 }
 </script>

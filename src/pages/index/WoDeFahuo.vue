@@ -104,7 +104,6 @@ let dialogVisibleAddress = ref(false);
 function updateAddress(info) {
   dialogVisibleAddress.value = true;
   currentShopInfo.value = info;
-  console.log(currentShopInfo.value);
 }
 
 function getList() {
