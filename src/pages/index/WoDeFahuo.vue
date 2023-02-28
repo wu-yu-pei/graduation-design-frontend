@@ -24,7 +24,7 @@
             <template #default="scope">
               <el-tag v-if="scope.row.status == 0" type="success">已送达</el-tag>
               <el-tag v-else-if="scope.row.status == 1 && scope.row.current_position">运输中</el-tag>
-              <el-tag v-else-if="scope.row.status == 1 && !scope.row.current_position">发货中</el-tag>
+              <el-tag v-else-if="scope.row.status == 1 && !scope.row.current_position" type="warning">发货中</el-tag>
               <el-tag v-else-if="scope.row.status == 2" type="danger">已拦截</el-tag>
             </template>
           </el-table-column>
