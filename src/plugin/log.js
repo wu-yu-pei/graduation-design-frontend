@@ -1,4 +1,4 @@
-export default function markdownPlugin() {
+export default function() {
   return {
     // 插件名称
     name: 'vite:log',
