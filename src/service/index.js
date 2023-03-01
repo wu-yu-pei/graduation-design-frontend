@@ -43,6 +43,8 @@ const BaseConfig = {
   interceptors: {
     // 请求拦截器
     interceptorsRequest(config) {
+      const token = localStorage.getItem('token');
+      token && (config.headers.Authorization = `Bearer ${token}`);
       return config;
     },
     interceptorsRequestCatch() {},
