@@ -75,3 +75,19 @@ export function getTransportInfo(id) {
     },
   });
 }
+
+export function createThings(data) {
+  return request.post({
+    url: '/createThings',
+    data,
+  });
+}
+
+export function getAllThings(id) {
+  return request.get({
+    url: '/getAllThings',
+    params: {
+      uid: id,
+    },
+  });
+}
