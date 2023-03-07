@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { router } from '../main';
 class Request {
   constructor(config) {
     this.instance = axios.create(config);
@@ -50,8 +50,9 @@ const BaseConfig = {
     interceptorsRequestCatch() {},
     // 响应拦截器
     interceptorsResponse(res) {
-      const router = useRouter();
       if (res.data.code == 401) {
+        localStorage.setItem('token','')
+        localStorage.setItem('userInfo','')
         return router.replace('/login');
       }
       return res;

@@ -27,7 +27,7 @@ import { setupLayouts } from 'virtual:generated-layouts';
 import pinia from './store';
 
 const routes = setupLayouts(generatedRoutes);
-const router = createRouter({
+export const router = createRouter({
   routes,
   history: createWebHistory(),
 });
