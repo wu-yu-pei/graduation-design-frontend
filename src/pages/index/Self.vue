@@ -15,7 +15,7 @@
           <el-input :disabled="currentStatus == 0" v-model="formInline.account" placeholder="Approved by" />
         </el-form-item>
         <el-form-item label="操作:">
-          <el-button :disabled="time != 0" v-if="currentStatus == 0" @click="changeCurrentStatus()">{{ time == 0 ? '修改' : `${time}后可修改` }}</el-button>
+          <el-button :disabled="time != 0" v-if="currentStatus == 0" @click="changeCurrentStatus()">{{ time == 0 ? '修改' : `${time}秒后可修改` }}</el-button>
           <el-button v-if="currentStatus == 1" v-loading="currentStatus == isChanging" @click="sureChange()">确定</el-button>
         </el-form-item>
       </el-form>
