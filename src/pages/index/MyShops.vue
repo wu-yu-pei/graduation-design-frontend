@@ -3,7 +3,7 @@
     <Title>
       <div class="left">我的商品</div>
       <div class="right">
-        <el-upload ref="upload" class="upload" :auto-upload="false" :on-change="fileChange">
+        <el-upload ref="upload" class="upload" :limit="1" :auto-upload="false" :on-remove="fileRemove" :on-change="fileChange">
           <template #trigger>
             <el-button>导入</el-button>
           </template>
@@ -59,6 +59,10 @@ function fileChange(e) {
     });
   }
   file.value = e;
+}
+
+function fileRemove() {
+  file.value = null;
 }
 
 function readFile(file) {

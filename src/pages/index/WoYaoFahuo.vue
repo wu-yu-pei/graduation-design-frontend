@@ -5,7 +5,12 @@
       <div class="form">
         <el-form :inline="true" :model="formDate" class="demo-form-inline">
           <el-form-item label="物流名称">
-            <el-input v-model="formDate.name" placeholder="请输入物流名称" />
+            <!-- <el-input v-model="formDate.name" placeholder="请输入物流名称" /> -->
+            <el-select v-model="formDate.name" placeholder="请选择商品" style="width: 115px">
+              <template v-for="(item, index) of AllShop" :key="index">
+                <el-option :label="item.name" :value="item.name" />
+              </template>
+            </el-select>
           </el-form-item>
           <el-form-item label="发货地址">
             <el-input id="start-position" @focus="() => (targetFouce = 1)" v-model="formDate.start_position" placeholder="请输入物流名称" />
@@ -35,7 +40,7 @@ meta:
 </route>
 
 <script setup>
-import { createShop } from '../../service/home/index';
+import { createShop, getAllThings } from '../../service/home/index';
 import useAppStore from '../../store/app';
 const mapRef = ref(null);
 let buttonRef = ref(null);
@@ -44,6 +49,11 @@ let startInfo = reactive();
 let endAllResult = reactive();
 let endInfo = reactive();
 let targetFouce = ref();
+let AllShop = ref([]);
+
+getAllThings().then((res) => {
+  AllShop.value = res.data.data;
+});
 
 const appStore = useAppStore();
 const formDate = reactive({
@@ -116,7 +126,7 @@ function sureAddress() {
     formDate.start_position_geo = startInfo.location.lng + ',' + startInfo.location.lat;
   } else if (targetFouce.value == 2) {
     endInfo = endAllResult[target.getAttribute('data-idx')];
-    formDate.end_position = endInfo.cityname + endInfo.adname +  endInfo.address;
+    formDate.end_position = endInfo.cityname + endInfo.adname + endInfo.address;
     formDate.end_position_geo = endInfo.location.lng + ',' + endInfo.location.lat;
   }
   buttonRef.value.style.opacity = 0;
