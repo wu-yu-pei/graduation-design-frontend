@@ -4,7 +4,12 @@
       <el-breadcrumb-item :to="{ path: '/SystemIntroduce' }">首页</el-breadcrumb-item>
       <Transition>
         <el-breadcrumb-item v-if="isAnimation">
-          <a href="javascript:;">{{ currentMenu.title }}</a>
+          <a href="javascript:;">
+            <el-icon>
+              <component :is="currentMenu.icon"></component>
+            </el-icon>&nbsp;
+            {{ currentMenu.title }}
+          </a>
         </el-breadcrumb-item>
       </Transition>
     </el-breadcrumb>
@@ -35,6 +40,7 @@ const menu = [
   },
   { title: '物流流向', index: '/WuLui', icon: 'Refresh' },
   { title: '智能物流', index: '/ZhiNengWuLui', icon: 'Headset' },
+  { title: '个人中心', index: '/Self', icon: 'User' },
 ];
 const isAnimation = ref(true);
 const route = useRoute();
@@ -82,5 +88,10 @@ function findNameByPath(menu, path) {
 .v-leave-to {
   opacity: 0;
   transform: translateX(10px);
+}
+
+a {
+  display: flex;
+  align-items: center;
 }
 </style>

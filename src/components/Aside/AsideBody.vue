@@ -54,6 +54,7 @@ const menu = [
   },
   { title: '物流流向', index: '/WuLui', icon: 'Refresh' },
   { title: '智能物流', index: '/ZhiNengWuLui', icon: 'Headset' },
+  { title: '个人中心', index: '/Self', icon: 'User' },
 ];
 
 let defaultActive = ref(menu[0].index);
