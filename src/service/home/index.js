@@ -76,3 +76,10 @@ export function getAllThings(id) {
     },
   });
 }
+
+export function changeUserInfo(data) {
+  return request.post({
+    url: '/change',
+    data,
+  });
+}

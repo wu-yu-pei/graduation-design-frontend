@@ -6,13 +6,13 @@
     <div class="body">
       <el-form :inline="true" :model="formInline" label-position="top" label-width="100px">
         <el-form-item label="姓名:">
-          <el-input :disabled="currentStatus == 0" v-model="formInline.username" placeholder="Approved by" />
+          <el-input :disabled="currentStatus == 0" v-model="formInline.uname" placeholder="Approved by" />
         </el-form-item>
         <el-form-item label="发货地址:">
           <el-input :disabled="currentStatus == 0" v-model="formInline.address" placeholder="Approved by" />
         </el-form-item>
         <el-form-item label="联系电话:">
-          <el-input :disabled="currentStatus == 0" v-model="formInline.phone" placeholder="Approved by" />
+          <el-input :disabled="currentStatus == 0" v-model="formInline.account" placeholder="Approved by" />
         </el-form-item>
         <el-form-item label="操作:">
           <el-button v-if="currentStatus == 0" @click="changeCurrentStatus()">修改</el-button>
@@ -30,17 +30,21 @@ meta:
 
 <script setup>
 import { ref } from 'vue';
+import { changeUserInfo } from '../../service/home/index';
 import useAppStore from '../../store/app';
 let currentStatus = ref(0); // 0:禁止编辑状态 1:编辑状态
 const appStore = useAppStore();
 const formInline = reactive({
-  username: appStore.userInfo.uname,
+  uname: appStore.userInfo.uname,
   address: appStore.userInfo.address,
-  phone: appStore.userInfo.account,
+  account: appStore.userInfo.account,
 });
 
 function sureChange() {
   currentStatus.value = 0;
+  changeUserInfo({ ...formInline, address_geo: '113.814659,34.811091' }).then((res) => {
+    console.log(res);
+  });
   console.log('submit!');
 }
 
