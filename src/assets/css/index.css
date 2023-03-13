@@ -45,6 +45,9 @@ html {
 .amap-logo {
   opacity: 0;
 }
+.amap-copyright {
+  opacity: 0;
+}
 /*
   * 高德地图 搜索提示
 */

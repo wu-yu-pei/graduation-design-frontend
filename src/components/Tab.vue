@@ -23,6 +23,7 @@ watch(
       activeIndex.value = tabs.value.findIndex((item) => item.name == route.meta.name);
       return;
     }
+    console.log(route.meta.name);
     tabs.value.push({
       name: route.meta.name,
       path: route.fullPath,

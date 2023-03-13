@@ -12,13 +12,17 @@
       </div>
     </Title>
     <div class="body">
-      <div class="item" v-for="item in allThings">
-        <ol>
-          {{
-            item.name
-          }}
-        </ol>
-      </div>
+      <el-table :data="allThings" border stripe style="width: 100%" v-loading="!allThings.length">
+        <el-table-column prop="id" label="id" width="180" />
+        <el-table-column prop="name" label="Name" width="180" />
+        <el-table-column prop="total" label="总量" width="180" />
+        <el-table-column prop="count" label="现有库存" width="180" />
+        <el-table-column prop="price" label="价格" width="180" />
+        <el-table-column label="操作">
+          <el-button>编辑</el-button>
+          <el-button>删除</el-button>
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -138,6 +142,18 @@ async function sure() {
   .upload {
     display: flex;
     flex-direction: row-reverse;
+  }
+}
+
+.my-shops {
+  height: 100%;
+}
+.body {
+  height: calc(100% - 40px);
+  .el-table--fit {
+    max-height: 100% !important;
+    overflow: scroll;
+    margin-top: 10px;
   }
 }
 </style>
