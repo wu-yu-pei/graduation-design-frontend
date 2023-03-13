@@ -33,7 +33,7 @@
 import { ref } from 'vue';
 
 const menu = [
-  { title: '系统介绍', index: '/SystemIntroduce', icon: 'House' },
+  { title: '系统介绍', index: '', icon: 'House' },
   { title: '我的货物', index: '/MyShops', icon: 'ShoppingBag' },
   {
     title: '物流管理',

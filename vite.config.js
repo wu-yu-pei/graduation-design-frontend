@@ -7,7 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
-import logPlugin from './src/plugin/log'
+import logPlugin from './src/plugin/log';
 
 import Unocss from 'unocss/vite';
 
@@ -15,14 +15,7 @@ import Unocss from 'unocss/vite';
 export default defineConfig({
   plugins: [
     vue({}),
-    Pages({
-      extendRoute(route) {
-        if (route.path === '/') {
-          route.redirect = '/SystemIntroduce';
-          return route;
-        }
-      },
-    }),
+    Pages({}),
     Unocss(),
     Layouts(),
     AutoImport({
@@ -33,7 +26,7 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-    logPlugin()
+    logPlugin(),
   ],
   server: {
     port: 5173,
