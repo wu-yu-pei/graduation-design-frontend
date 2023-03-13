@@ -30,12 +30,13 @@ meta:
 
 <script setup>
 import { ref } from 'vue';
+import useAppStore from '../../store/app';
 let currentStatus = ref(0); // 0:禁止编辑状态 1:编辑状态
-
+const appStore = useAppStore();
 const formInline = reactive({
-  username: 'wuyupei',
-  address: '河南省郑州市金水区 河南财政金融学院 龙子湖校区',
-  phone: '18338323927',
+  username: appStore.userInfo.uname,
+  address: appStore.userInfo.address,
+  phone: appStore.userInfo.account,
 });
 
 function sureChange() {

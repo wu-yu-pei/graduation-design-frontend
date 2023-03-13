@@ -12,11 +12,14 @@
               </template>
             </el-select>
           </el-form-item>
-          <el-form-item label="发货地址">
-            <el-input id="start-position" @focus="() => (targetFouce = 1)" v-model="formDate.start_position" placeholder="请输入物流名称" />
+          <el-form-item label="收货人姓名">
+            <el-input v-model="formDate.toName" placeholder="请输入收货人姓名" />
+          </el-form-item>
+          <el-form-item label="收货人电话">
+            <el-input v-model="formDate.toPhone" placeholder="请输入收货人电话" />
           </el-form-item>
           <el-form-item label="收货地址">
-            <el-input id="end-position" @focus="() => (targetFouce = 2)" v-model="formDate.end_position" placeholder="请输入物流名称" />
+            <el-input id="end-position" v-model="formDate.end_position" placeholder="请输入物流名称" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">发货</el-button>
@@ -48,7 +51,6 @@ let startAllResult = reactive();
 let startInfo = reactive();
 let endAllResult = reactive();
 let endInfo = reactive();
-let targetFouce = ref();
 let AllShop = ref([]);
 
 getAllThings().then((res) => {
@@ -58,10 +60,12 @@ getAllThings().then((res) => {
 const appStore = useAppStore();
 const formDate = reactive({
   name: '',
-  start_position: '',
-  start_position_geo: '',
+  start_position: appStore.userInfo.address,
+  start_position_geo: appStore.userInfo.address_geo,
   end_position: '',
   end_position_geo: '',
+  toName: '',
+  toPhone: '',
 });
 
 // 地图加载完成
@@ -74,29 +78,17 @@ function mapLoadComplete() {
     autoFitView: true,
   });
 
-  const autoCompleteStart = new AMap.AutoComplete({
-    input: 'start-position',
-  });
   const autoCompleteEnd = new AMap.AutoComplete({
     input: 'end-position',
   });
 
-  autoCompleteStart.on('select', selectStart); //注册监听，当选中某条记录时会触发
   autoCompleteEnd.on('select', selectEnd); //注册监听，当选中某条记录时会触发
-  autoCompleteStart.on('error', errorMessage);
   autoCompleteEnd.on('error', errorMessage);
+
   function errorMessage() {
     return ElMessage({
       type: 'warning',
       message: '当日搜索次数已用完！明天再来吧',
-    });
-  }
-
-  function selectStart(e) {
-    buttonRef.value.style.opacity = 1;
-    // 搜索
-    placeSearch.search(e.poi.name, (status, result) => {
-      startAllResult = result.poiList.pois;
     });
   }
 
@@ -118,17 +110,11 @@ function sureAddress() {
     });
     return;
   }
-  if (!targetFouce.value) return;
-  if (targetFouce.value == 1) {
-    startInfo = startAllResult[target.getAttribute('data-idx')];
-    ///startInfo
-    formDate.start_position = startInfo.cityname + startInfo.adname + startInfo.address;
-    formDate.start_position_geo = startInfo.location.lng + ',' + startInfo.location.lat;
-  } else if (targetFouce.value == 2) {
-    endInfo = endAllResult[target.getAttribute('data-idx')];
-    formDate.end_position = endInfo.cityname + endInfo.adname + endInfo.address;
-    formDate.end_position_geo = endInfo.location.lng + ',' + endInfo.location.lat;
-  }
+
+  endInfo = endAllResult[target.getAttribute('data-idx')];
+  formDate.end_position = endInfo.cityname + endInfo.adname + endInfo.address;
+  formDate.end_position_geo = endInfo.location.lng + ',' + endInfo.location.lat;
+
   buttonRef.value.style.opacity = 0;
   document.querySelector('#panel-fahuo > div').remove();
   mapRef.value.getMap().clearMap();
@@ -149,9 +135,9 @@ async function onSubmit() {
     });
     formDate.end_position = '';
     formDate.end_position_geo = '';
-    formDate.start_position = '';
-    formDate.start_position_geo = '';
     formDate.name = '';
+    formDate.toName = '';
+    formDate.toPhone = '';
   }
 }
 </script>
