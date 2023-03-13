@@ -39,12 +39,12 @@ const formInline = reactive({
 });
 
 function sureChange() {
-  this.currentStatus = 0;
+  currentStatus.value = 0;
   console.log('submit!');
 }
 
 function changeCurrentStatus() {
-  this.currentStatus = 1;
+  currentStatus.value = 1;
 }
 </script>
 
