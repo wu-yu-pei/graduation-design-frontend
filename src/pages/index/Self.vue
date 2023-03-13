@@ -16,7 +16,7 @@
         </el-form-item>
         <el-form-item label="操作:">
           <el-button v-if="currentStatus == 0" @click="changeCurrentStatus()">修改</el-button>
-          <el-button v-if="currentStatus == 1" @click="sureChange()">确定</el-button>
+          <el-button v-if="currentStatus == 1" v-loading="currentStatus == isChanging" @click="sureChange()">确定</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -33,6 +33,7 @@ import { ref } from 'vue';
 import { changeUserInfo } from '../../service/home/index';
 import useAppStore from '../../store/app';
 let currentStatus = ref(0); // 0:禁止编辑状态 1:编辑状态
+let isChanging = ref(false);
 const appStore = useAppStore();
 const formInline = reactive({
   uname: appStore.userInfo.uname,
@@ -41,11 +42,26 @@ const formInline = reactive({
 });
 
 function sureChange() {
-  currentStatus.value = 0;
+  isChanging.value = true;
+  appStore.userInfo.uname = formInline.uname;
+  appStore.userInfo.address = formInline.address;
+  appStore.userInfo.account = formInline.account;
+
   changeUserInfo({ ...formInline, address_geo: '113.814659,34.811091' }).then((res) => {
-    console.log(res);
+    if (res.data.code == 200) {
+      ElMessage({
+        type: 'success',
+        message: '修改成功',
+      });
+    } else if (res.data.code == 400) {
+      ElMessage({
+        type: 'error',
+        message: '修改失败',
+      });
+    }
+    currentStatus.value = 0;
+    isChanging.value = false;
   });
-  console.log('submit!');
 }
 
 function changeCurrentStatus() {
