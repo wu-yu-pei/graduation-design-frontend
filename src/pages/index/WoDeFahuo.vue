@@ -5,7 +5,7 @@
       <div class="body">
         <el-table :data="shops" v-loading="tabelIsLoading" style="width: 100%" :border="true">
           <el-table-column fixed prop="id" label="id" width="100" />
-          <el-table-column fixed prop="name" label="物流名称" width="250" />
+          <el-table-column fixed prop="thing.name" label="物流名称" width="250" />
           <el-table-column prop="toName" label="收货人" width="250" />
           <el-table-column prop="toPhone" label="收货电话" width="250" />
           <el-table-column label="物流流向">

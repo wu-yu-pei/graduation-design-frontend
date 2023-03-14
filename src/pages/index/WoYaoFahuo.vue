@@ -6,9 +6,9 @@
         <el-form :inline="true" :model="formDate" class="demo-form-inline">
           <el-form-item label="物流名称">
             <!-- <el-input v-model="formDate.name" placeholder="请输入物流名称" /> -->
-            <el-select v-model="formDate.name" placeholder="请选择商品" style="width: 115px">
+            <el-select v-model="formDate.thing_id" placeholder="请选择商品" style="width: 115px">
               <template v-for="(item, index) of AllShop" :key="index">
-                <el-option :label="item.name" :value="item.name" />
+                <el-option :label="item.name" :value="item.id" />
               </template>
             </el-select>
           </el-form-item>
@@ -47,8 +47,6 @@ import { createShop, getAllThings } from '../../service/home/index';
 import useAppStore from '../../store/app';
 const mapRef = ref(null);
 let buttonRef = ref(null);
-let startAllResult = reactive();
-let startInfo = reactive();
 let endAllResult = reactive();
 let endInfo = reactive();
 let AllShop = ref([]);
@@ -59,7 +57,7 @@ getAllThings().then((res) => {
 
 const appStore = useAppStore();
 const formDate = reactive({
-  name: '',
+  thing_id: '',
   start_position: appStore.userInfo.address,
   start_position_geo: appStore.userInfo.address_geo,
   end_position: '',
@@ -121,7 +119,7 @@ function sureAddress() {
 }
 // 提交
 async function onSubmit() {
-  if (!formDate.name || !formDate.end_position || !formDate.end_position_geo || !formDate.start_position || !formDate.start_position_geo || !formDate.toName || !formDate.toPhone) {
+  if (!formDate.thing_id || !formDate.end_position || !formDate.end_position_geo || !formDate.start_position || !formDate.start_position_geo || !formDate.toName || !formDate.toPhone) {
     return ElMessage({
       type: 'error',
       message: '请输入完整信息',
@@ -135,7 +133,7 @@ async function onSubmit() {
     });
     formDate.end_position = '';
     formDate.end_position_geo = '';
-    formDate.name = '';
+    formDate.thing_id = '';
     formDate.toName = '';
     formDate.toPhone = '';
   }
