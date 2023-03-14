@@ -30,11 +30,16 @@ meta:
 
 <script setup>
 import { ref } from 'vue';
+import { useStorage } from '@vueuse/core';
 import { changeUserInfo } from '../../service/home/index';
 import useAppStore from '../../store/app';
 let currentStatus = ref(0); // 0:禁止编辑状态 1:编辑状态
 let isChanging = ref(false);
-let time = ref(0);
+// let time = ref(0);
+const time = useStorage('time', 0, sessionStorage);
+if (time.value > 0) {
+  setIn(time.value);
+}
 const appStore = useAppStore();
 const formInline = reactive({
   uname: appStore.userInfo.uname,
@@ -62,7 +67,7 @@ function sureChange() {
     }
     currentStatus.value = 0;
     isChanging.value = false;
-    setIn(60);
+    setIn(10);
   });
 }
 
