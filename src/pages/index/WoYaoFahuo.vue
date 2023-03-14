@@ -121,7 +121,7 @@ function sureAddress() {
 }
 // 提交
 async function onSubmit() {
-  if (!formDate.name || !formDate.end_position || !formDate.end_position_geo || !formDate.start_position || !formDate.start_position_geo) {
+  if (!formDate.name || !formDate.end_position || !formDate.end_position_geo || !formDate.start_position || !formDate.start_position_geo || !formDate.toName || !formDate.toPhone) {
     return ElMessage({
       type: 'error',
       message: '请输入完整信息',

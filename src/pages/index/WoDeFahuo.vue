@@ -6,6 +6,8 @@
         <el-table :data="shops" v-loading="tabelIsLoading" style="width: 100%" :border="true">
           <el-table-column fixed prop="id" label="id" width="100" />
           <el-table-column fixed prop="name" label="物流名称" width="250" />
+          <el-table-column prop="toName" label="收货人" width="250" />
+          <el-table-column prop="toPhone" label="收货电话" width="250" />
           <el-table-column label="物流流向">
             <template #default="scope"> {{ scope.row.start_position }} --> {{ scope.row.end_position }} </template>
           </el-table-column>
