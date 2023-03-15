@@ -83,3 +83,10 @@ export function changeUserInfo(data) {
     data,
   });
 }
+
+export function deleteOneThing(id) {
+  return request.delete({
+    url: '/deleteOneThing',
+    params: { id },
+  });
+}

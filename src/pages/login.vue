@@ -23,7 +23,7 @@ if (localStorage.getItem('token')) {
   router.push('/');
 }
 const formDate = reactive({
-  account: '18338323927',
+  account: '0',
   password: '0',
 });
 

@@ -19,11 +19,23 @@
         <el-table-column prop="count" label="现有库存" width="180" />
         <el-table-column prop="price" label="价格" width="180" />
         <el-table-column label="操作">
-          <el-button>编辑</el-button>
-          <el-button>删除</el-button>
+          <template #default="scope">
+            <el-button type="primary" @click="toEdit(scope.row.id)">编辑</el-button>
+            <el-button type="danger" @click="remoteById(scope.row.id)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
+
+    <el-dialog v-model="isEdit" title="编辑" width="30%" :before-close="handleClose">
+      暂未开发...
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="isEdit = false">取消</el-button>
+          <el-button type="primary" @click="edit(id)"> 确定 </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -33,10 +45,10 @@ meta:
 </route>
 
 <script setup>
-import ExcelJS from 'exceljs/dist/exceljs';
+import ExcelJS, { async } from 'exceljs/dist/exceljs';
 import 'exceljs/dist/exceljs.bare';
 
-import { createThings, getAllThings } from '../../service/home/index';
+import { createThings, getAllThings, deleteOneThing } from '../../service/home/index';
 import useAppStore from '../../store/app';
 const appStore = useAppStore();
 // 1.0 商品列表
@@ -46,10 +58,13 @@ async function getList() {
   allThings.value = res.data.data;
 }
 getList();
+
+// 2.0 导入
 const wb = new ExcelJS.Workbook();
 const upload = ref(null);
 const file = ref(null);
 let isLoading = ref(false);
+
 function fileChange(e) {
   if (!e.name.endsWith('.xlsx')) {
     upload.value.clearFiles();
@@ -131,6 +146,34 @@ async function sure() {
       isLoading.value = false;
     });
   });
+}
+
+// 3.0 删除
+async function remoteById(id) {
+  ElMessageBox.confirm('确定删除吗？', '删除', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(async () => {
+      let res = await deleteOneThing(id);
+      await getList();
+      ElMessage({
+        type: 'success',
+        message: res.data.msg,
+      });
+    })
+    .catch(() => {});
+}
+
+// 4.0 编辑
+let isEdit = ref(false);
+
+function toEdit(id) {
+  isEdit.value = true;
+}
+function edit(id) {
+  isEdit.value = false;
 }
 </script>
 

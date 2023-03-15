@@ -35,6 +35,10 @@ class Request {
   post(config) {
     return this.request({ ...config, method: 'POST' });
   }
+
+  delete(config) {
+    return this.request({ ...config, method: 'DELETE' });
+  }
 }
 
 const BaseConfig = {
@@ -51,8 +55,8 @@ const BaseConfig = {
     // 响应拦截器
     interceptorsResponse(res) {
       if (res.data.code == 401) {
-        localStorage.setItem('token','')
-        localStorage.setItem('userInfo','')
+        localStorage.setItem('token', '');
+        localStorage.setItem('userInfo', '');
         return router.replace('/login');
       }
       return res;
