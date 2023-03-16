@@ -14,9 +14,8 @@
     <div class="body">
       <el-table :data="allThings" border stripe style="width: 100%" v-loading="!allThings.length">
         <el-table-column prop="id" label="id" width="180" />
-        <el-table-column prop="name" label="Name" width="180" />
-        <el-table-column prop="total" label="总量" width="180" />
-        <el-table-column prop="count" label="现有库存" width="180" />
+        <el-table-column prop="name" label="商品名称" width="180" />
+        <el-table-column prop="total" label="现有库存" width="180" />
         <el-table-column prop="price" label="价格" width="180" />
         <el-table-column label="操作">
           <template #default="scope">
@@ -28,11 +27,21 @@
     </div>
 
     <el-dialog v-model="isEdit" title="编辑" width="30%" :before-close="handleClose">
-      暂未开发...
+      <el-form :inline="true" :model="currentInfo" class="demo-form-inline">
+        <el-form-item label="商品名称">
+          <el-input v-model="currentInfo.name" placeholder="Approved by" />
+        </el-form-item>
+        <el-form-item label="商品价格">
+          <el-input v-model="currentInfo.price" placeholder="Approved by" />
+        </el-form-item>
+        <el-form-item label="现有库存">
+          <el-input v-model="currentInfo.total" placeholder="Approved by" />
+        </el-form-item>
+      </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="isEdit = false">取消</el-button>
-          <el-button type="primary" @click="edit(id)"> 确定 </el-button>
+          <el-button type="primary" @click="edit()"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -48,7 +57,7 @@ meta:
 import ExcelJS, { async } from 'exceljs/dist/exceljs';
 import 'exceljs/dist/exceljs.bare';
 
-import { createThings, getAllThings, deleteOneThing } from '../../service/home/index';
+import { createThings, getAllThings, deleteOneThing, changeOneThing } from '../../service/home/index';
 import useAppStore from '../../store/app';
 const appStore = useAppStore();
 // 1.0 商品列表
@@ -168,12 +177,31 @@ async function remoteById(id) {
 
 // 4.0 编辑
 let isEdit = ref(false);
+let currentInfo = reactive({
+  id: '',
+  name: '',
+  price: '',
+  total: '',
+});
 
 function toEdit(id) {
   isEdit.value = true;
+  let target = allThings.value.find((i) => i.id == id);
+  for (let key in currentInfo) {
+    currentInfo[key] = target[key];
+  }
 }
-function edit(id) {
+
+async function edit(id) {
   isEdit.value = false;
+  const res = await changeOneThing(currentInfo.id, currentInfo.name, currentInfo.price, currentInfo.total);
+  if (res.data.code == 200) {
+    getList();
+    return ElMessage({
+      type: 'success',
+      message: res.data.msg,
+    });
+  }
 }
 </script>
 

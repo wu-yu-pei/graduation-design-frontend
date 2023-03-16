@@ -280,6 +280,7 @@ function showAllShop() {
   var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(10, 0) });
 
   for (var i = 0; i < shops.length; i++) {
+    if (!shops[i].current_position_geo) continue;
     var marker = new AMap.Marker({
       position: shops[i].current_position_geo.split(','),
       map: map,

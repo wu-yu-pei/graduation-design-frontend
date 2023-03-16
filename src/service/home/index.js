@@ -90,3 +90,10 @@ export function deleteOneThing(id) {
     params: { id },
   });
 }
+
+export function changeOneThing(id, name, price, total) {
+  return request.post({
+    url: '/changeOneThing',
+    data: { id, name, price, total },
+  });
+}
