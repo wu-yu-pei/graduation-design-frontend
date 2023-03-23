@@ -30,9 +30,13 @@ const formDate = reactive({
 function exec() {
   isLoading.value = true;
   login({ account: formDate.account, password: formDate.password, type: 1 }).then((res) => {
-   console.log(res);
     // 登录失败
-    if(res.data.code == 210) {
+    if (res.data.code == 210) {
+      ElMessage({
+        type: 'error',
+        message: '登录失败',
+      });
+      isLoading.value = false;
       return router.push('/login');
     }
     appStore.userInfo = res.data;
