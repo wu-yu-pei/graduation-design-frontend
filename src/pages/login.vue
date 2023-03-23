@@ -30,7 +30,7 @@ const formDate = reactive({
 function exec() {
   isLoading.value = true;
   login({ account: formDate.account, password: formDate.password, type: 1 }).then((res) => {
-    // 密码错误
+    // 登录失败
     if(res.data.code == 201) {
       return router.push('/login');
     }
