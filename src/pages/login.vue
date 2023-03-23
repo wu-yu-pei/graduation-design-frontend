@@ -30,6 +30,10 @@ const formDate = reactive({
 function exec() {
   isLoading.value = true;
   login({ account: formDate.account, password: formDate.password, type: 1 }).then((res) => {
+    // 密码错误
+    if(res.data.code == 201) {
+      return router.push('/login');
+    }
     appStore.userInfo = res.data;
     appStore.token = res.data.token;
     localStorage.setItem('token', res.data.token);
