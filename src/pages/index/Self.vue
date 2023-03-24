@@ -9,7 +9,7 @@
           <el-input :disabled="currentStatus == 0" v-model="formInline.uname" placeholder="请输入姓名" />
         </el-form-item>
         <el-form-item label="发货地址:">
-          <el-input @click="addressInputFocus" :disabled="true" v-model="formInline.address" placeholder="请选择地址" />
+          <el-input @focus.once="addressInputFocus" :disabled="currentStatus == 0" v-model="formInline.address" placeholder="请选择地址" />
         </el-form-item>
         <el-form-item label="联系电话:">
           <el-input :disabled="currentStatus == 0" v-model="formInline.account" placeholder="请输入联系电话" />
@@ -70,7 +70,7 @@ const formInline = reactive({
 
 let mapRef = ref();
 let dialogVisible = ref(false);
-function addressInputFocus(e) {
+function addressInputFocus() {
   dialogVisible.value = true;
 }
 
