@@ -71,6 +71,7 @@ const formInline = reactive({
 let mapRef = ref();
 let dialogVisible = ref(false);
 function addressInputFocus() {
+  console.log('---focus---');
   dialogVisible.value = true;
 }
 
