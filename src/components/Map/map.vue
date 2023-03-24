@@ -28,7 +28,7 @@ function initMap() {
     key: '62bf752ab1f963e58a757af1298be24c',
     // key: 'fbdb2058bd97602b9eace1c346321be6',
     version: '2.0',
-    plugins: ['AMap.Driving', 'AMap.PlaceSearch', 'AMap.AutoComplete', 'AMap.GeometryUtil', 'AMap.DistrictSearch'],
+    plugins: ['AMap.Driving', 'AMap.PlaceSearch', 'AMap.AutoComplete', 'AMap.GeometryUtil', 'AMap.DistrictSearch', 'AMap.Geocoder'],
     Loca: {
       version: '2.0',
     },

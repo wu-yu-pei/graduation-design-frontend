@@ -9,7 +9,7 @@
           <el-input :disabled="currentStatus == 0" v-model="formInline.uname" placeholder="Approved by" />
         </el-form-item>
         <el-form-item label="发货地址:">
-          <el-input :disabled="currentStatus == 0" v-model="formInline.address" placeholder="Approved by" />
+          <el-input @focus="addressInputFocus" :disabled="currentStatus == 0" v-model="formInline.address" placeholder="Approved by" />
         </el-form-item>
         <el-form-item label="联系电话:">
           <el-input :disabled="currentStatus == 0" v-model="formInline.account" placeholder="Approved by" />
@@ -19,6 +19,21 @@
           <el-button v-if="currentStatus == 1" v-loading="currentStatus == isChanging" @click="sureChange()">确定</el-button>
         </el-form-item>
       </el-form>
+
+      <el-dialog v-model="dialogVisible" title="选择位置" width="90%" height="80vh" draggable :destroy-on-close="true">
+        <div class="content">
+          <div class="address">
+            {{ current_position_info.current_position_address }}
+          </div>
+          <Map ref="mapRef" @mapLoadComplete="mapAddressLoadComplete"></Map>
+        </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="sure"> 确定 </el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -40,20 +55,59 @@ const time = useStorage('time', 0, sessionStorage);
 if (time.value > 0) {
   setIn(time.value);
 }
+
 const appStore = useAppStore();
+let current_position_info = reactive({
+  current_position_address: '',
+  current_position_address_geo: '',
+});
 const formInline = reactive({
   uname: appStore.userInfo.uname,
   address: appStore.userInfo.address,
   account: appStore.userInfo.account,
+  address_geo: appStore.userInfo.address_geo,
 });
+
+let mapRef = ref();
+let dialogVisible = ref(false);
+function addressInputFocus() {
+  dialogVisible.value = true;
+}
+function sure() {
+  formInline.address_geo = current_position_info.current_position_address_geo;
+  formInline.address = current_position_info.current_position_address;
+  dialogVisible.value = false;
+}
+
+function mapAddressLoadComplete() {
+  const map = mapRef.value.getMap();
+
+  map.on('click', (e) => {
+    current_position_info.current_position_address_geo = e.lnglat.lng + ',' + e.lnglat.lat;
+
+    var geocoder = new AMap.Geocoder({
+      // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+      city: '010',
+    });
+
+    var lnglat = [e.lnglat.lng, e.lnglat.lat];
+
+    geocoder.getAddress(lnglat, function (status, result) {
+      if (status === 'complete' && result.info === 'OK') {
+        current_position_info.current_position_address = result.regeocode.formattedAddress;
+      }
+    });
+  });
+}
 
 function sureChange() {
   isChanging.value = true;
   appStore.userInfo.uname = formInline.uname;
   appStore.userInfo.address = formInline.address;
   appStore.userInfo.account = formInline.account;
+  appStore.userInfo.address_geo = formInline.address_geo;
 
-  changeUserInfo({ ...formInline, address_geo: '113.814659,34.811091' }).then((res) => {
+  changeUserInfo({ ...formInline }).then((res) => {
     if (res.data.code == 200) {
       ElMessage({
         type: 'success',
@@ -99,6 +153,20 @@ function setIn(outTime) {
   .upload {
     display: flex;
     flex-direction: row-reverse;
+  }
+}
+
+.content {
+  position: relative;
+  height: 70vh;
+  .address {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 26px;
+    font-weight: 800;
   }
 }
 
