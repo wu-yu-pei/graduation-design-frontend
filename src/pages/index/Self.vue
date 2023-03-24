@@ -6,13 +6,13 @@
     <div class="body">
       <el-form :inline="true" :model="formInline" label-position="top" label-width="100px">
         <el-form-item label="姓名:">
-          <el-input :disabled="currentStatus == 0" v-model="formInline.uname" placeholder="Approved by" />
+          <el-input :disabled="currentStatus == 0" v-model="formInline.uname" placeholder="请输入姓名" />
         </el-form-item>
         <el-form-item label="发货地址:">
-          <el-input @focus="addressInputFocus" :disabled="currentStatus == 0" v-model="formInline.address" placeholder="Approved by" />
+          <el-input @focus="addressInputFocus" :disabled="currentStatus == 0" v-model="formInline.address" placeholder="请选择地址" />
         </el-form-item>
         <el-form-item label="联系电话:">
-          <el-input :disabled="currentStatus == 0" v-model="formInline.account" placeholder="Approved by" />
+          <el-input :disabled="currentStatus == 0" v-model="formInline.account" placeholder="请输入联系电话" />
         </el-form-item>
         <el-form-item label="操作:">
           <el-button :disabled="time != 0" v-if="currentStatus == 0" @click="changeCurrentStatus()">{{ time == 0 ? '修改' : `${time}秒后可修改` }}</el-button>
@@ -29,8 +29,8 @@
         </div>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click.self="sureSelect"> 确定 </el-button>
+            <el-button @click.stop="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click.stop="sureSelect"> 确定 </el-button>
           </span>
         </template>
       </el-dialog>
