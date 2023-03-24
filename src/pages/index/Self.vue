@@ -29,8 +29,8 @@
         </div>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click.stop="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click.stop="sureSelect"> 确定 </el-button>
+            <el-button @click="() => (dialogVisible = false)">取消</el-button>
+            <el-button type="primary" @click="() => sureSelect()"> 确定 </el-button>
           </span>
         </template>
       </el-dialog>
