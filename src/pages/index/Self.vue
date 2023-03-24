@@ -30,7 +30,7 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="sure"> 确定 </el-button>
+            <el-button type="primary" @click="sureSelect"> 确定 </el-button>
           </span>
         </template>
       </el-dialog>
@@ -73,7 +73,7 @@ let dialogVisible = ref(false);
 function addressInputFocus() {
   dialogVisible.value = true;
 }
-function sure() {
+function sureSelect() {
   formInline.address_geo = current_position_info.current_position_address_geo;
   formInline.address = current_position_info.current_position_address;
   dialogVisible.value = false;
