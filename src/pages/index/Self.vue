@@ -82,6 +82,16 @@ function sure() {
 function mapAddressLoadComplete() {
   const map = mapRef.value.getMap();
 
+  var marker = new AMap.Marker({
+    position: [0, 0],
+    map: map,
+    offset: new AMap.Pixel(-15, -15),
+    icon: new AMap.Icon({
+      image: '/image/map.png',
+      imageSize: new AMap.Size(30, 30),
+    }),
+  });
+
   map.on('click', (e) => {
     current_position_info.current_position_address_geo = e.lnglat.lng + ',' + e.lnglat.lat;
 
@@ -91,6 +101,8 @@ function mapAddressLoadComplete() {
     });
 
     var lnglat = [e.lnglat.lng, e.lnglat.lat];
+
+    marker.setPosition(lnglat);
 
     geocoder.getAddress(lnglat, function (status, result) {
       if (status === 'complete' && result.info === 'OK') {
