@@ -70,8 +70,9 @@ const formInline = reactive({
 
 let mapRef = ref();
 let dialogVisible = ref(false);
-function addressInputFocus() {
+function addressInputFocus(e) {
   dialogVisible.value = true;
+  e.preventDefault();
 }
 
 function sureSelect() {
