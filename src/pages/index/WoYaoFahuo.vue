@@ -119,6 +119,7 @@ function sureAddress() {
 }
 // 提交
 async function onSubmit() {
+  console.log(formDate);
   if (!formDate.thing_id || !formDate.end_position || !formDate.end_position_geo || !formDate.start_position || !formDate.start_position_geo || !formDate.toName || !formDate.toPhone) {
     return ElMessage({
       type: 'error',

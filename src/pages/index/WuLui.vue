@@ -5,7 +5,7 @@
       <el-button @click="showShopFlow">运输流向（飞线图）</el-button>
       <el-button @click="showShopTransport">运输流向（运输图）</el-button>
       <el-button @click="showAllShop">全部物流</el-button>
-      <el-button @click="showCount">数量分布</el-button>
+      <!-- <el-button @click="showCount">数量分布</el-button> -->
     </div>
     <div class="styles">
       <el-radio-group v-model="currentStyle" @change="radioChange">
@@ -277,10 +277,10 @@ function showShopTransport() {
 function showAllShop() {
   const map = mapRef.value.getMap();
   mapRef.value.getLoca().clear();
+  console.log(shops);
   var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(10, 0) });
-
   for (var i = 0; i < shops.length; i++) {
-    if (!shops[i].current_position_geo) continue;
+    if (!shops[i].current_position_geo || shops[i].current_position_geo == 'undefined,undefined') continue;
     var marker = new AMap.Marker({
       position: shops[i].current_position_geo.split(','),
       map: map,
@@ -291,7 +291,7 @@ function showAllShop() {
     });
     marker.content = `
       <div class="point-marker-body">
-        <div class="name">${shops[i].name}</div>
+        <div class="name">物品名称:${shops[i].thing.name}</div>
         <div class="address">当前位置：${shops[i].current_position}</div>
       </div>
     `;

@@ -33,8 +33,9 @@
           <el-table-column fixed="right" prop="status" label="操作" width="500">
             <template #default="scope">
               <el-button icon="Delete" type="danger" plain @click="showDeleteDilog(scope.row.id)">删除</el-button>
-              <el-button v-if="scope.row.status == 1" type="danger" plain @click="lanjie(scope.row.id)">拦截</el-button>
+              <el-button v-if="scope.row.status == 1" type="danger" plain @click="lanjie(scope.row)">拦截</el-button>
               <el-button v-if="scope.row.status == 1" type="primary" plain @click="updateAddress(scope.row)">更新位置</el-button>
+              <el-button v-if="scope.row.status == 2" type="primary" plain @click="updateAddress2(scope.row)">撤销拦截</el-button>
               <el-button type="success" plain @click="showLine(scope.row)">运输路线</el-button>
             </template>
           </el-table-column>
@@ -92,6 +93,7 @@ meta:
 import { useDateFormat } from '@vueuse/core';
 import { findShop, updateAddressApi, removeById, addATransportInfo, getTransportInfo } from '../../service/home/index';
 import useAppStore from '../../store/app';
+import { async } from 'exceljs/dist/exceljs';
 
 let appStore = useAppStore();
 let mapRef = ref(null);
@@ -117,6 +119,20 @@ let toAddress = ref('');
 let toAddressInfo = ref('');
 let allAddress = reactive([]);
 let targetMarker = '';
+async function updateAddress2(info) {
+  await updateAddressApi({
+    id: info.id,
+    lng: info.lng,
+    lat: info.lat,
+    current_position: info.current_position,
+    status: 1,
+  });
+  ElMessage({
+    type: 'success',
+    message: '已撤销拦截 物流将继续运输',
+  });
+  await getShops()
+}
 // 更新位置
 let dialogVisibleAddress = ref(false);
 function updateAddress(info) {
@@ -171,12 +187,26 @@ function selectChange(val) {
 }
 
 async function updateAddressConfirm() {
-  await updateAddressApi({
-    id: currentShopInfo.value.id,
-    lng: toAddressInfo.value.lng,
-    lat: toAddressInfo.value.lat,
-    current_position: toAddressInfo.value.current_position.replace(/\|\d*\|/, ''),
-  });
+  // console.log(toAddressInfo.value);
+  if (toAddressInfo.value.current_position == allAddress[allAddress.length - 1].current_position) {
+    await updateAddressApi({
+      id: currentShopInfo.value.id,
+      lng: toAddressInfo.value.lng,
+      lat: toAddressInfo.value.lat,
+      current_position: toAddressInfo.value.current_position.replace(/\|\d*\|/, ''),
+      status: 0,
+    });
+    console.log('-----');
+  } else {
+    await updateAddressApi({
+      id: currentShopInfo.value.id,
+      lng: toAddressInfo.value.lng,
+      lat: toAddressInfo.value.lat,
+      current_position: toAddressInfo.value.current_position.replace(/\|\d*\|/, ''),
+      status: 1,
+    });
+  }
+
   ///toAddressInfo.value
   await addATransportInfo({
     id: currentShopInfo.value.id,
@@ -324,11 +354,19 @@ function sleep(time) {
 }
 
 // 3.0拦截
-function lanjie() {
-  console.log(11);
+async function lanjie(data) {
+  await updateAddressApi({
+    id: data.id,
+    lng: data.lng,
+    lat: data.lat,
+    current_position: data.current_position,
+    status: 2,
+  });
+  await getShops()
+
   ElMessage({
     type: 'success',
-    message: 'test:拦截成功',
+    message: '已拦截 物流即将退回',
   });
 }
 
