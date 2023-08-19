@@ -22,11 +22,12 @@ const isLoading = ref(false);
 if (localStorage.getItem('token')) {
   router.push('/');
 }
+/// isLoading,router
 const formDate = reactive({
   account: '0',
   password: '0',
 });
-
+/// formDate,formDate.account
 function exec() {
   isLoading.value = true;
   login({ account: formDate.account, password: formDate.password, type: 1 }).then((res) => {

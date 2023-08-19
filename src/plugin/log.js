@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   return {
     // 插件名称
     name: 'vite:log',
@@ -8,9 +8,10 @@ export default function() {
 
     // 代码转译，这个函数的功能类似于 `webpack` 的 `loader`
     transform(code, id, opt) {
-      let str = '';
-      const res = code.replaceAll(/\/\/\/([a-zA-Z,.]{1,200})/g, (a, b, c, d) => {
-        b.split(',').forEach((item) => (str += `console.log('${item} ->',${item});`));
+      const res = code.replaceAll(/\/\/\/\s?([a-zA-Z,.]{1,200})/g, (a, b, c, d) => {
+        let str = '';
+        console.log(b);
+        b.replaceAll(/\s*/g,"").split(',').forEach((item) => (str += `console.log('${item} ->',${item});`));
         return str;
       });
       return res;
