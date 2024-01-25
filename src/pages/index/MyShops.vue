@@ -12,7 +12,7 @@
       </div>
     </Title>
     <div class="body">
-      <el-table :data="allThings" border stripe style="width: 100%" v-loading="!allThings.length">
+      <el-table :data="allThings" border stripe style="width: 100%" v-loading="allThings == null">
         <el-table-column prop="id" label="id" width="180" />
         <el-table-column prop="name" label="商品名称" width="180" />
         <el-table-column prop="total" label="现有库存" width="180" />
@@ -61,7 +61,7 @@ import { createThings, getAllThings, deleteOneThing, changeOneThing } from '../.
 import useAppStore from '../../store/app';
 const appStore = useAppStore();
 // 1.0 商品列表
-const allThings = ref([]);
+const allThings = ref(null);
 async function getList() {
   let res = await getAllThings(appStore.userInfo.id);
   allThings.value = res.data.data;
