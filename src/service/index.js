@@ -40,25 +40,18 @@ class Request {
     return this.request({ ...config, method: 'DELETE' });
   }
 }
-
+console.log(import.meta.env.VITE_BUSE_URL,)
 const BaseConfig = {
   baseURL: import.meta.env.VITE_BUSE_URL,
   timeout: 100000000000,
   interceptors: {
     // 请求拦截器
     interceptorsRequest(config) {
-      const token = localStorage.getItem('token');
-      token && (config.headers.Authorization = `Bearer ${token}`);
       return config;
     },
     interceptorsRequestCatch() {},
     // 响应拦截器
     interceptorsResponse(res) {
-      if (res.data.code == 401) {
-        localStorage.setItem('token', '');
-        localStorage.setItem('userInfo', '');
-        return router.replace('/login');
-      }
       return res;
     },
     interceptorsResponseCatch() {},

@@ -29,14 +29,14 @@ export default defineConfig({
     logPlugin(),
   ],
   server: {
-    port: 5173,
+    port: 5174,
     open: true,
     http: true,
     ssr: false,
     // 设置代理
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:7552',
+        target: 'https://api.super-project.wuyupei.top/api',
         secure: false,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
