@@ -36,10 +36,13 @@ export default defineConfig({
     // 设置代理
     proxy: {
       '/api': {
-        target: 'https://api.super-project.wuyupei.top/api',
+        target: 'https://api.super-project.wuyupei.top/api/',
         secure: false,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) =>  {
+          console.log(path, path.replace(/^\/api/, ''))
+          return path.replace(/^\/api/, '')
+        },
       },
     },
   },
