@@ -1,14 +1,17 @@
 <template>
   <div class="index" v-if="isLogin">
-    <div class="banner"></div>
     <div class="control">
       <div class="control-item" @click="$router.push('/search')">
         <div class="control-item-icon i-material-symbols:feature-search"></div>
-        <div class="control-item-title">报名查询</div>
+        <div class="control-item-title">手续费查询</div>
       </div>
       <div class="control-item" v-if="username === 'admin'" @click="$router.push('/upload')">
         <div class="control-item-icon i-material-symbols:background-grid-small-outline">1</div>
         <div class="control-item-title">上传文件</div>
+      </div>
+      <div class="control-item" @click="$router.push('/hasin')">
+        <div class="control-item-icon i-material-symbols:library-books-outline-rounded">1</div>
+        <div class="control-item-title">报名查询</div>
       </div>
     </div>
   </div>
@@ -41,13 +44,13 @@ const handleLogin = () => {
   if (new RegExp(/^user\d{2}$/).test(username.value.trim()) && (new RegExp(/^\d{2}\w{2}$/).test(password.value.trim()))) {
     showToast('登陆成功');
     isLogin.value = true;
-    localStorageWithExpiry.setItem('username', username.value, 60 * 24);
-    localStorageWithExpiry.setItem('isLogin', true, 60 * 24);
+    localStorageWithExpiry.setItem('username', username.value, 60);
+    localStorageWithExpiry.setItem('isLogin', true, 60);
   } else if (username.value === 'admin' && password.value === '010407') {
     showToast('登陆成功');
     isLogin.value = true;
-    localStorageWithExpiry.setItem('username', username.value, 60 * 24);
-    localStorageWithExpiry.setItem('isLogin', true, 60 * 24);
+    localStorageWithExpiry.setItem('username', username.value, 60);
+    localStorageWithExpiry.setItem('isLogin', true, 60);
   } else {
     showToast('用户名或密码错误');
   }
@@ -63,30 +66,38 @@ const handleLogin = () => {
 }
 
 .control {
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-wrap: wrap;
-  margin: 0 20px;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f5f5f5;
 }
 
 .control-item {
-  --n: 3;
-  /* 每行显示的子项数量 */
-  --item-width: 100px;
-  /* 子项宽度 */
-  --space: calc(100% / var(--n) - var(--item-width));
-  /* 计算子项之间的间距 */
-  --m: calc(var(--space) / 2);
-  /* 左右间距的一半 */
-  margin: 10px var(--m);
-  /* 动态计算左右的间距 */
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  width: 50%;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
 }
 
 .control-item-icon {
   width: 30px;
   height: 30px;
-  color: #000;
+  color: #0056b3;
   margin: 0 auto;
   margin-bottom: 10px;
+}
+.control-item-title {
+  text-align: center;
+  color: #333333;
 }
 
 .index-login {

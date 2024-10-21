@@ -80,14 +80,15 @@ async function search() {
   if (res.data.data.length === 0) {
     ElMessage.warning('未查询到数据');
   } else {
-    ElMessage.success(`查询成功:${res.data.data[0]}`);
+    const money = res.data.data.reduce((acc, cur) => acc + cur.e, 0);
+    ElMessage.success(`查询成功: ${money / 100} 元`);
   }
 }
 </script>
 
 <style scoped lang="less">
 .search {
-  padding: 10px;
+  padding: 20px 10px;
 }
 
 .van-button {
