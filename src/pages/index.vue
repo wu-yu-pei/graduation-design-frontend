@@ -72,7 +72,7 @@ const handleLogin = () => {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #fff;
 }
 
 .control-item {
@@ -82,7 +82,7 @@ const handleLogin = () => {
   margin: auto;
   width: 50%;
   padding: 30px;
-  background-color: #ffffff;
+  background-color: #f8f9fa;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #e0e0e0;
