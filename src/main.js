@@ -7,6 +7,8 @@ import './assets/css/index.css';
 // progress
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css'
+import Vant from 'vant';
+import 'vant/lib/index.css';
 
 // unocss
 import 'uno.css';
@@ -44,6 +46,8 @@ app.use(ElementPlus);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
+
+app.use(Vant)
 app.use(pinia);
 app.use(router);
 app.mount('#app');
