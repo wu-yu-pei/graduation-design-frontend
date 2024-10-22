@@ -24,17 +24,7 @@ export default defineConfig({
       open: true //如果存在本地服务端口，将在打包后自动展示
     }),
     cdn({
-      modules:[autoComplete('axios'), autoComplete('vue'), autoComplete('vue-router'), {
-        name:'vant',
-        var:'vant',
-        css:'https://cdn.jsdelivr.net/npm/vant@4.9.8/lib/index.min.css',
-        path: 'https://cdn.jsdelivr.net/npm/vant@4.9.8/lib/vant.min.js'
-      },{
-        name:'nprogress',
-        var:'NProgress',
-        css: "https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css",
-        path: "https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"
-      }],
+      modules:[],
     }),
     Pages({}),
     Unocss(),
