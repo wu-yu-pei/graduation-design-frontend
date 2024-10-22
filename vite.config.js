@@ -31,7 +31,7 @@ export default defineConfig({
         path: 'https://cdn.jsdelivr.net/npm/vant@4.9.8/lib/vant.min.js'
       },{
         name:'nprogress',
-        var:'nprogress',
+        var:'NProgress',
         css: "https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css",
         path: "https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"
       }],
