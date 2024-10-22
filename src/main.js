@@ -7,7 +7,7 @@ import './assets/css/index.css';
 // progress
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css'
-import Vant from 'vant';
+import vant from 'vant';
 import 'vant/lib/index.css';
 
 // unocss
@@ -16,7 +16,7 @@ import 'uno.css';
 // normalize.css
 import 'normalize.css';
 
-import ElementPlus from 'element-plus';
+import { ElMessage, ElUpload } from 'element-plus';
 import 'element-plus/dist/index.css';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
@@ -42,12 +42,14 @@ router.afterEach(() => {
 });
 
 const app = createApp(App);
-app.use(ElementPlus);
+app.use(ElUpload);
+app.use(ElMessage);
+
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
 
-app.use(Vant)
+app.use(vant)
 app.use(pinia);
 app.use(router);
 app.mount('#app');
