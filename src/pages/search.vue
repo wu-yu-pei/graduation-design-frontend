@@ -61,7 +61,7 @@ async function search() {
   if (res.data.data.length === 0) {
     ElMessage.warning('未查询到数据');
   } else {
-    const money = res.data.data.reduce((acc, cur) => acc + cur.e * 1, 0);
+    const money = res.data.data.reduce((acc, cur) => acc + cur.g * 1, 0);
     ElMessage.success(`查询成功: ${money / 100} 元`);
   }
 }
