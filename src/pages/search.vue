@@ -11,12 +11,15 @@
       <van-button type="primary" @click="search">查询</van-button>
 
       <van-calendar v-model:show="showCalendar" type="multiple" @confirm="onConfirm" :min-date="new Date(2022, 0, 1)" :max-date="new Date(2025, 0, 31)" />
+
+      <back></back>
     </div>
   </div>
 </template>
 
 <script setup>
 import request from '../service/index';
+import back from "../components/back.vue";
 import { ElMessage } from 'element-plus';
 const results = ref([]);
 const showCalendar = ref(false);
@@ -31,7 +34,7 @@ const data = ref({
 
 const onConfirm = (value) => {
   console.log(value);
-  const formatDate = (date) => 
+  const formatDate = (date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 

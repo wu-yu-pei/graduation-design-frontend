@@ -4,11 +4,15 @@
 
     <van-button type="primary" @click="search">查询</van-button>
     {{ info }}
+
+    <back></back>
   </div>
 </template>
 
 <script setup>
 import request from '../service/index';
+import back from "../components/back.vue";
+
 
 const data = ref({
   b: '',
