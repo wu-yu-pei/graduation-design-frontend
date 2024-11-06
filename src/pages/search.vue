@@ -31,7 +31,9 @@ const data = ref({
 
 const onConfirm = (value) => {
   console.log(value);
-  const formatDate = (date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  const formatDate = (date) => 
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
 
   startDate.value = formatDate(new Date(value[0]));
   endDate.value = formatDate(new Date(value[value.length - 1]));
